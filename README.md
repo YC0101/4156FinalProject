@@ -15,7 +15,7 @@ Before using this service, please follow the steps below to set up environment f
 1. Maven 3.9.5: https://maven.apache.org/download.cgi Download and follow the installation instructions.
 2. JDK 17: This project used JDK 17 for development https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html 
 3. IntelliJ IDE: https://www.jetbrains.com/idea/
-4. After you clone this project, go to /IndividualProject and run ```mvn spring-boot:run -Dspring-boot.run.arguments="setup"``` for MacOS. Leave it running until you see “System Setup” in the terminal then terminate the program.
+4. After you clone this project, go to /FinalProject and run ```mvn spring-boot:run -Dspring-boot.run.arguments="setup"``` for MacOS. Leave it running until you see “System Setup” in the terminal then terminate the program.
 5. After initializes the database in step 4, you may run the project using ```mvn spring-boot:run```
 6. If you wish to check the style, run ```mvn checkstyle:check```; to see coverage report, run ```mvn jacoco:report``` and open the coverage report in the target/site/jacoco.
 
