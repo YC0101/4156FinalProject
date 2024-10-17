@@ -2,6 +2,7 @@ package dev.coms4156.project.finalproject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,9 +21,9 @@ public class ResourceUnitTests {
    */
   @BeforeAll
   public static void setupCourseForTesting() {
-    testItem = new Item();
-    testItem2 = new Item();
-    testItem3 = new Item();
+    testItem = new Item("Food", 10, LocalDate.now().plusDays(5), "Donor123");
+    testItem2 = new Item("Medicine", 5, LocalDate.now().minusDays(1), "Donor456");
+    testItem3 = new Item("Clothing", 0, null, "Donor789");  // No expiration, but quantity is zero
 
     testItemMap = new HashMap<>();
 
