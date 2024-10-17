@@ -93,6 +93,7 @@ public class Resource implements Serializable {
 
 
   @Serial
+  private static final long serialVersionUID = 234567L;
   private HashMap<Integer, Item> items;
   private String resourceId;
 }
