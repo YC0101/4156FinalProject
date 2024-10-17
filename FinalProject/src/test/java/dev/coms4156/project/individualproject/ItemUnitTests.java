@@ -161,4 +161,17 @@ public class ItemUnitTests {
     assertEquals("invalidStatus", testItem.getStatus(), 
         "The status should be set to 'invalidStatus' unless validation is applied");
   }
+
+  /**
+   * Test validation for an item with a valid quantity but a null expiration date.
+   */
+  @Test
+  public void testValidateAttributes_NullExpirationDate() {
+    // Creating an item with a null expiration date and valid quantity
+    Item nullExpirationItem = new Item("Water", 5, null, "DonorXYZ");
+      
+    // This should pass since the expiration date is allowed to be null, and the quantity is valid
+    assertTrue(nullExpirationItem.validateAttributes(), 
+        "The item should be valid when the expiration date is null but the quantity is positive");
+  }
 }
