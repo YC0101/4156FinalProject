@@ -120,7 +120,8 @@ public class Item implements Serializable {
    */
   @Override
   public String toString() {
-    return "Item[ID=" + this.itemId + ", Type=" + this.itemType + ", Quantity=" + this.quantity +
-            ", Expiration=" + this.expirationDate + ", Status=" + this.status + ", DonorID=" + this.donorId + "]";
+    return "Item[ID=" + this.itemId + ", Type=" + this.itemType + ", Quantity=" + this.quantity
+        + ", Expiration=" + this.expirationDate + ", Status="
+        + this.status + ", DonorID=" + this.donorId + "]";
   }
 }
