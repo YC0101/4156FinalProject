@@ -33,13 +33,6 @@ public class Request implements Serializable {
   }
 
   /**
-   * Registers the request in the system.
-   */
-  public void createRequest() {
-    System.out.println("Request created with ID: " + requestId);
-  }
-
-  /**
    * Returns the unique identifier of the request.
    *
    * @return the request ID.

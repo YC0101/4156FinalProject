@@ -73,23 +73,20 @@ For detailed info about endpoints, chechk the "Endpoints" section.
 
 **Request Class**
 1. Attributes:
-- requestId (String): Unique identifier for the request (e.g., "req123").
-- resourceType (String): The type of the resource being requested (e.g., "Food", "Medical Supplies").
-- quantity (int): The quantity of the resource requested (e.g., 5).
-- priorityLevel (String): The priority level of the request (e.g., "High", "Medium", "Low").
-- status (String): The current status of the request (e.g., "requested", "fulfilled").
-- requesterInfo (String): Information about the person or entity who made the request (e.g., "Shelter001").
+- `requestId` (String): Unique identifier for the request (e.g., "req123").
+- `itemIds` (List<String>): List of IDs for the items being requested.
+- `status` (String): The current status of the request (e.g., "requested", "fulfilled", "dispatched").
+- `priorityLevel` (String): The priority level of the request (e.g., "High", "Medium", "Low").
+- `requesterInfo` (String): Information about the person or entity who made the request (e.g., "NGO123", "Hospital001").
 
 2. Methods:
-- createRequest(): Adds the current request to the in-memory database. This method initializes the request creation process.
-- getRequestId(): Returns the unique identifier of the request.
-- getResourceType(): Returns the type of resource being requested.
-- getQuantity(): Returns the quantity of the requested resource.
-- getPriorityLevel(): Returns the priority level of the request.
-- getStatus(): Returns the current status of the request.
-- getRequesterInfo(): Returns information about the requester (e.g., shelter or individual in need).
-- setStatus(String newStatus): Updates the status of the request (e.g., from "requested" to "fulfilled").
-- setPriorityLevel(String newPriorityLevel): Updates the priority level of the request (e.g., from "Medium" to "High").
+- `getRequestId()`: Returns the unique identifier of the request.
+- `getItemIds()`: Returns the list of item IDs involved in the request.
+- `getStatus()`: Returns the current status of the request.
+- `getPriorityLevel()`: Returns the priority level of the request.
+- `getRequesterInfo()`: Provides information about the requester.
+- `updateStatus(String newStatus)`: Updates the status of the request (e.g., from "requested" to "fulfilled").
+- `updatePriority(String newPriority)`: Adjusts the priority level of the request (e.g., from "Medium" to "High").
 
 **Scheduler Class**
 1. Attributes:
