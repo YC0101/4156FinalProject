@@ -2,12 +2,14 @@ package dev.coms4156.project.finalproject;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +34,9 @@ public class RouteController {
   /**
    * Handles the POST request for creating a new donation. It validates the input and
    * triggers the donation creation in the service layer.
+   * 
+   * @param resourceId A {@code String} the unique ID of the resource the item will
+   *        be added to.
    *
    * @param itemType A {@code String} representing the type of the item the
    *        donor wants to donate.
@@ -50,6 +55,7 @@ public class RouteController {
    */
   @PostMapping(value = "/createDonation", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> createDonation(
+      @RequestParam(value = "resourceId") String resourceId,
       @RequestParam(value = "itemType") String itemType,
       @RequestParam(value = "quantity") int quantity,
       @RequestParam(value = "expirationDate") LocalDate expirationDate,
@@ -62,7 +68,7 @@ public class RouteController {
         return new ResponseEntity<>("Invalid Input Item", HttpStatus.BAD_REQUEST);
       } else {
         Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                            .get("R_COLUMBIA");
+                            .get(resourceId);
         resource.addItem(newItem.getItemId(), newItem);
         return new ResponseEntity<>(newItem.getItemId(), HttpStatus.OK);
       }
@@ -72,19 +78,102 @@ public class RouteController {
   }
 
   /**
+   * Handles the POST request for creating a new request. 
+   * 
+   * @param requestId A {@code String} the unique ID of the request to be
+   *        added to.
+   *
+   * @param itemIds A {@code List<String>} representing the list of item IDs being requested.
+   * 
+   * @param status A {@code String} representing the current status of the request.
+   * 
+   * @param priorityLevel A {@code String} representing the priority level of the request.
+   * 
+   * @param requesterInfo A{@code String} representing the information about the requester.
+   *
+   * @return A {@code ResponseEntity} object containing either the unique ID of the created
+   *         request and an HTTP 200 response or, an appropriate message indicating the proper 
+   *         response.
+   */
+  @PostMapping(value = "/createRequest", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> createRequest(
+      @RequestParam(value = "requestId") String requestId,
+      @RequestParam(value = "itemIds") List<String> itemIds,
+      @RequestParam(value = "status") String status,
+      @RequestParam(value = "priorityLevel") String priorityLevel,
+      @RequestParam(value = "requesterInfo") String requesterInfo
+  ) {
+    try {
+      Request newRequest = new Request(requestId, itemIds, status, priorityLevel, requesterInfo);
+      Scheduler scheduler = FinalProjectApplication.myFileDatabase.getRequests();
+      scheduler.addRequest(newRequest);
+      return new ResponseEntity<>(newRequest.getRequestId(), HttpStatus.OK);
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  /**
+   * Attempts to dispatch current requests with specified resource.
+   * 
+   * @param requestId A {@code String} the unique ID of the request to be
+   *        added to.
+   *
+   * @return A {@code ResponseEntity} object containing either the information about the
+   *         dispatched requests and an HTTP 200 response or, an appropriate message indicating 
+   *         the proper response.
+   */
+  @PatchMapping(value = "/processRequests", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> processRequests(@RequestParam(value = "resourceId") String resourceId) {
+    try {
+      Scheduler scheduler = FinalProjectApplication.myFileDatabase.getRequests();
+      Resource resource = FinalProjectApplication.myFileDatabase.getResources()
+                            .get(resourceId);
+      scheduler.setResource(resource);
+      return new ResponseEntity<>(scheduler.processRequests(), HttpStatus.OK);
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  /**
+   * Returns the details of the resource specified by the resource ID.
+   *
+   * @param resourceId A {@code String} the unique ID of the resource.
+   *
+   * @return A {@code ResponseEntity} object containing either the details of the resource and
+   *         an HTTP 200 response or, or an error message if the item is not found.
+   */
+  @GetMapping(value = "/retrieveResource", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> retrieveResource(@RequestParam(value = "resourceId") String resourceId) {
+    try {
+      Resource resource = FinalProjectApplication.myFileDatabase.getResources()
+                          .get(resourceId);
+      return new ResponseEntity<>(resource.toString(), HttpStatus.OK);
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  /**
    * Returns the details of the item specified by the item ID.
    *
+   * @param resourceId A {@code String} the unique ID of the resource.
+   * 
    * @param itemId A {@code String} the unique ID of the item.
    *
    * @return A {@code ResponseEntity} object containing either the details of the item and
    *         an HTTP 200 response or, or an error message if the item is not found.
    */
-  @GetMapping(value = "/retrieveItemById", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> retrieveItemById(@RequestParam(value = "itemId") String itemId) {
+  @GetMapping(value = "/retrieveItem", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> retrieveItem(
+      @RequestParam(value = "resourceId") String resourceId,
+      @RequestParam(value = "itemId") String itemId
+  ) {
     try {
       HashMap<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                          .get("R_COLUMBIA");
+                          .get(resourceId);
       itemsMapping = resource.getAllItems();
 
       if (!itemsMapping.containsKey(itemId)) {
@@ -101,15 +190,17 @@ public class RouteController {
   /**
    * Returns all available items, that is, items with status code 'available'.
    *
+   * @param resourceId A {@code String} the unique ID of the resource.
+   * 
    * @return A {@code ResponseEntity} object containing either the details of all available items
    *         as a string and an HTTP 200 response or, or an error message if no items are found.
    */
   @GetMapping(value = "/retrieveAvailableItems", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> retrieveAvailableItems() {
+  public ResponseEntity<?> retrieveAvailableItems(@RequestParam(value = "resourceId") String resourceId) {
     try {
       HashMap<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                          .get("R_COLUMBIA");
+                          .get(resourceId);
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
@@ -134,16 +225,18 @@ public class RouteController {
 
   /**
    * Returns all dispatched items, that is, items with status code 'dispatched'.
+   * 
+   * @param resourceId A {@code String} the unique ID of the resource.
    *
    * @return A {@code ResponseEntity} object containing either the details of all dispatched items
    *         as a string and an HTTP 200 response or, or an error message if no items are found.
    */
   @GetMapping(value = "/retrieveDispatchedItems", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> retrieveDispatchedItems() {
+  public ResponseEntity<?> retrieveDispatchedItems(@RequestParam(value = "resourceId") String resourceId) {
     try {
       HashMap<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                          .get("R_COLUMBIA");
+                          .get(resourceId);
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
@@ -168,6 +261,8 @@ public class RouteController {
 
   /**
    * Returns the details of the items provided by a specified donor.
+   * 
+   * @param resourceId A {@code String} the unique ID of the resource.
    *
    * @param donorId A{@code String} representing the ID of the donor who provided 
    *        the item.
@@ -176,10 +271,14 @@ public class RouteController {
    *         an HTTP 200 response or, or an error message if no item are found.
    */
   @GetMapping(value = "/retrieveItemsByDonor", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> retrieveItemsByDonor(@RequestParam(value = "donorId") String donorId) {
+  public ResponseEntity<?> retrieveItemsByDonor(
+      @RequestParam(value = "resourceId") String resourceId,
+      @RequestParam(value = "donorId") String donorId
+  ) {
     try {
       HashMap<String, Item> itemsMapping;
-      Resource resource = FinalProjectApplication.myFileDatabase.getResources().get("R_COLUMBIA");
+      Resource resource = FinalProjectApplication.myFileDatabase.getResources()
+                          .get(resourceId);
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();

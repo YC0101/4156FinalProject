@@ -45,8 +45,8 @@ public class FinalProjectApplication {
    *
    * @param testData A {@code MyFileDatabase} object referencing test data.
    */
-  public static void overrideDatabase(MyFileDatabase testData) {
-    myFileDatabase = testData;
+  public static void overrideDatabase(MyFileDatabase testDatabase) {
+    myFileDatabase = testDatabase;
     saveData = false;
   }
 
