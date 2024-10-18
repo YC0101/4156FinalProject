@@ -24,6 +24,15 @@ public class Scheduler {
   }
 
   /**
+   * Constructs a Scheduler with a given list of requests.
+   *
+   * @param requests           List of requests to be processed.
+   */
+  public Scheduler(List<Request> requests) {
+    this.requests = requests;
+  }
+
+  /**
    * Processes all the requests by checking availability and scheduling dispatches.
    */
   public void processRequests() {
@@ -97,5 +106,23 @@ public class Scheduler {
    */
   public void addRequest(Request request) {
     requests.add(request);
+  }
+
+  /**
+   * Retrieves the list of requests.
+   *
+   * @return The list of requests.
+   */
+  public List<Request> getRequests() {
+    return requests;
+  }
+
+  /**
+   * Sets the resourceRepository of the scheduler.
+   *
+   * @param resource The resource to allocate.
+   */
+  public void setResource(Resource resource) {
+    resourceRepository = resource.getAllItems();
   }
 }
