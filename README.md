@@ -53,6 +53,7 @@ For detailed info about endpoints, chechk the "Endpoints" section.
 - `setQuantity(int quantity)`: Sets the quantity of the item to the given value.
 - `setExpirationDate(LocalDate expirationDate)`: Updates the expiration date of the item.
 - `setStatus(String status)`: Sets the current status of the item, such as `"available"` or `"dispatched"`.
+
 **Resource Class**
 1. Attributes:
 - `items` (HashMap<String, Item>): A map that stores all `Item` objects using `itemId` as the key.
@@ -92,12 +93,13 @@ For detailed info about endpoints, chechk the "Endpoints" section.
 
 **Scheduler Class**
 1. Attributes:
-- requests (List<Request>): A list of Request objects that are being processed by the scheduler.
+- `requests`: A list of Request objects that are being processed by the scheduler. These requests contain information about the resources needed and the requester.
+- `resourceRepository`: A map that represents the available resources in the system. The keys are resource IDs, and the values are the quantities available for each resource.
 
 2. Methods:
-- processRequests(): Processes incoming requests by checking the availability of requested resources in the Resource repository. It prioritizes requests based on urgency and schedules dispatches.
-- checkResourceAvailability(Request request): Checks if the requested resource is available in the repository. If the resource is available, the request can proceed to scheduling.
-- scheduleDispatch(Request request): Schedules the dispatch of available resources for a specific request. The method assigns volunteers or delivery agents to handle the dispatch logistics.
+- `processRequests()`: Processes incoming requests by checking the availability of requested resources in the Resource repository. It prioritizes requests based on urgency and schedules dispatches.
+- `checkResourceAvailability(Request request)`: Checks if the requested resource is available in the repository. If the resource is available, the request can proceed to scheduling.
+- `scheduleDispatch(Request request)`: Schedules the dispatch of available resources for a specific request. The method assigns volunteers or delivery agents to handle the dispatch logistics.
 
 **Controller (API)**
 1. Attributes: 
