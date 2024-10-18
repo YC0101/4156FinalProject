@@ -30,13 +30,13 @@ public class FinalProjectApplication {
   public void run(String[] args) {
     for (String arg : args) {
       if ("setup".equals(arg)) {
-        // myFileDatabase = new MyFileDatabase(false, "./resourceData.txt", "./requestData.txt"); // Reset data
+        myFileDatabase = new MyFileDatabase(false, "./resourceData.txt", "./requestData.txt"); // Reset data
         resetDataFile();
         System.out.println("System Setup");
         return;
       }
     }
-    // myFileDatabase = new MyFileDatabase(true, "./resourceData.txt", "./requestData.txt");
+    myFileDatabase = new MyFileDatabase(true, "./resourceData.txt", "./requestData.txt");
     System.out.println("Start up");
   }
 
@@ -123,7 +123,7 @@ public class FinalProjectApplication {
     requests[4] = new Request("REQ5", Arrays.asList(hygieneItems[3].getItemId(), clothingItems[2].getItemId()), 
     "Pending", "High", "Sara Doe");
 
-    // myFileDatabase.setRequests(new Scheduler(Arrays.asList(requests)));
+    myFileDatabase.setRequests(new Scheduler(Arrays.asList(requests)));
   }
 
   /**
@@ -135,7 +135,7 @@ public class FinalProjectApplication {
     System.out.println("Termination");
     if (saveData) {
       myFileDatabase.saveResourcesToFile();
-      // myFileDatabase.saveRequestsToFile();
+      myFileDatabase.saveRequestsToFile();
     }
   }
 
