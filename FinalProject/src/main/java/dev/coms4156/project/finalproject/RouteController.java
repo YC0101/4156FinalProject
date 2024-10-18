@@ -2,9 +2,7 @@ package dev.coms4156.project.finalproject;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import dev.coms4156.project.individualproject.Department;
-import dev.coms4156.project.individualproject.IndividualProjectApplication;
 
 /**
  * This class contains all the API routes for the system.
@@ -59,13 +54,16 @@ public class RouteController {
       @RequestParam(value = "quantity") int quantity,
       @RequestParam(value = "expirationDate") LocalDate expirationDate,
       @RequestParam(value = "donorId") String donorId
-    ) {
+  ) {
     try {
       Item newItem = new Item(itemType, quantity, expirationDate, donorId);
 
       if (!newItem.validateAttributes()) {
         return new ResponseEntity<>("Invalid Input Item", HttpStatus.BAD_REQUEST);
       } else {
+        Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
+                            .get("columbia_resource");
+        resource.addItem(newItem.getItemId(), newItem);
         return new ResponseEntity<>(newItem.getItemId(), HttpStatus.OK);
       }
     } catch (Exception e) {
@@ -76,7 +74,7 @@ public class RouteController {
   /**
    * Returns the details of the item specified by the item ID.
    *
-   * @param itemID A {@code String} the unique ID of the item.
+   * @param itemId A {@code String} the unique ID of the item.
    *
    * @return A {@code ResponseEntity} object containing either the details of the item and
    *         an HTTP 200 response or, or an error message if the item is not found.
@@ -85,7 +83,9 @@ public class RouteController {
   public ResponseEntity<?> retrieveItemById(@RequestParam(value = "itemId") String itemId) {
     try {
       HashMap<String, Item> itemsMapping;
-      itemsMapping = FinalProjectApplication.resourceDatabase.getAllItems();
+      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
+                          .get("columbia_resource");
+      itemsMapping = resource.getAllItems();
 
       if (!itemsMapping.containsKey(itemId)) {
         return new ResponseEntity<>("Item Not Found", HttpStatus.NOT_FOUND);
@@ -108,14 +108,16 @@ public class RouteController {
   public ResponseEntity<?> retrieveAvailableItems() {
     try {
       HashMap<String, Item> itemsMapping;
-      itemsMapping = FinalProjectApplication.resourceDatabase.getAllItems();
+      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
+                          .get("columbia_resource");
+      itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
       for (Map.Entry<String, Item> entry : itemsMapping.entrySet()) {
-        String ItemId = entry.getKey();
+        String itemId = entry.getKey();
         Item item = entry.getValue();
         if (item.getStatus() == "available") {
-          result.append(ItemId).append(": ").append(item.toString())
+          result.append(itemId).append(": ").append(item.toString())
           .append("\n");
         }
       }
@@ -140,14 +142,16 @@ public class RouteController {
   public ResponseEntity<?> retrieveDispatchedItems() {
     try {
       HashMap<String, Item> itemsMapping;
-      itemsMapping = FinalProjectApplication.resourceDatabase.getAllItems();
+      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
+                          .get("columbia_resource");
+      itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
       for (Map.Entry<String, Item> entry : itemsMapping.entrySet()) {
-        String ItemId = entry.getKey();
+        String itemId = entry.getKey();
         Item item = entry.getValue();
         if (item.getStatus() == "dispatched") {
-          result.append(ItemId).append(": ").append(item.toString())
+          result.append(itemId).append(": ").append(item.toString())
           .append("\n");
         }
       }
@@ -175,14 +179,15 @@ public class RouteController {
   public ResponseEntity<?> retrieveItemsByDonor(@RequestParam(value = "donorId") String donorId) {
     try {
       HashMap<String, Item> itemsMapping;
-      itemsMapping = FinalProjectApplication.resourceDatabase.getAllItems();
+      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping().get("columbia_resource");
+      itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
       for (Map.Entry<String, Item> entry : itemsMapping.entrySet()) {
-        String ItemId = entry.getKey();
+        String itemId = entry.getKey();
         Item item = entry.getValue();
         if (item.getDonorId() == donorId) {
-          result.append(ItemId).append(": ").append(item.toString())
+          result.append(itemId).append(": ").append(item.toString())
           .append("\n");
         }
       }
