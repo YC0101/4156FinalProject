@@ -61,7 +61,7 @@ public class RouteController {
       if (!newItem.validateAttributes()) {
         return new ResponseEntity<>("Invalid Input Item", HttpStatus.BAD_REQUEST);
       } else {
-        Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
+        Resource resource = FinalProjectApplication.myFileDatabase.getResources()
                             .get("R_COLUMBIA");
         resource.addItem(newItem.getItemId(), newItem);
         return new ResponseEntity<>(newItem.getItemId(), HttpStatus.OK);
@@ -108,7 +108,7 @@ public class RouteController {
   public ResponseEntity<?> retrieveAvailableItems() {
     try {
       HashMap<String, Item> itemsMapping;
-      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
+      Resource resource = FinalProjectApplication.myFileDatabase.getResources()
                           .get("R_COLUMBIA");
       itemsMapping = resource.getAllItems();
 
@@ -142,7 +142,7 @@ public class RouteController {
   public ResponseEntity<?> retrieveDispatchedItems() {
     try {
       HashMap<String, Item> itemsMapping;
-      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
+      Resource resource = FinalProjectApplication.myFileDatabase.getResources()
                           .get("R_COLUMBIA");
       itemsMapping = resource.getAllItems();
 
@@ -179,7 +179,7 @@ public class RouteController {
   public ResponseEntity<?> retrieveItemsByDonor(@RequestParam(value = "donorId") String donorId) {
     try {
       HashMap<String, Item> itemsMapping;
-      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping().get("R_COLUMBIA");
+      Resource resource = FinalProjectApplication.myFileDatabase.getResources().get("R_COLUMBIA");
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();

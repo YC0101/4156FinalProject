@@ -23,14 +23,14 @@ public class MyFileDatabase {
    * @param resourceFilePath the path to the file containing the entries of the resource data
    * @param requestFilePath the path to the file containing the entries of the request data
    */
-  public MyFileDatabase(boolean flag, String resourceFilePath, String requestFilePath) {
-    this.resourceFilePath = resourceFilePath;
-    this.requestFilePath = requestFilePath;
-    if (flag == true) {
-      this.resourceMapping = deSerializeResourcesFromFile();
-      this.scheduler = deSerializeRequestsFromFile();
-    }
-  }
+  // public MyFileDatabase(boolean flag, String resourceFilePath, String requestFilePath) {
+  //   this.resourceFilePath = resourceFilePath;
+  //   this.requestFilePath = requestFilePath;
+  //   if (flag == true) {
+  //     this.resourceMapping = deSerializeResourcesFromFile();
+  //     this.scheduler = deSerializeRequestsFromFile();
+  //   }
+  // }
 
   /**
    * Sets the Resource mapping of the database.
@@ -74,19 +74,19 @@ public class MyFileDatabase {
    *
    * @return the deserialized Request List
    */
-  public Scheduler deSerializeRequestsFromFile() {
-    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(requestFilePath))) {
-      Object obj = in.readObject();
-      if (obj instanceof HashMap) {
-        return new Scheduler((ArrayList<Request>) obj);
-      } else {
-        throw new IllegalArgumentException("Invalid request object type in file.");
-      }
-    } catch (IOException | ClassNotFoundException e) {
-      System.err.println(e.toString());
-      return new Scheduler(new ArrayList<>());
-    }
-  }
+  // public Scheduler deSerializeRequestsFromFile() {
+  //   try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(requestFilePath))) {
+  //     Object obj = in.readObject();
+  //     if (obj instanceof HashMap) {
+  //       return new Scheduler((ArrayList<Request>) obj);
+  //     } else {
+  //       throw new IllegalArgumentException("Invalid request object type in file.");
+  //     }
+  //   } catch (IOException | ClassNotFoundException e) {
+  //     System.err.println(e.toString());
+  //     return new Scheduler(new ArrayList<>());
+  //   }
+  // }
 
   /**
    * Saves the contents of the internal data structure of resource to the file. Note that contents of 
@@ -105,14 +105,14 @@ public class MyFileDatabase {
    * Saves the contents of the internal data structure of request to the file. Note that contents of 
    * the file are overwritten through this operation.
    */
-  public void saveRequestsToFile() {
-    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(requestFilePath))) {
-      out.writeObject(this.scheduler.getRequests());
-      System.out.println("Request object serialized successfully.");
-    } catch (IOException e) {
-      System.err.println(e.toString());
-    }
-  }
+  // public void saveRequestsToFile() {
+  //   try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(requestFilePath))) {
+  //     out.writeObject(this.scheduler.getRequests());
+  //     System.out.println("Request object serialized successfully.");
+  //   } catch (IOException e) {
+  //     System.err.println(e.toString());
+  //   }
+  // }
 
   /**
    * Gets the Resource mapping of the database.
@@ -137,19 +137,19 @@ public class MyFileDatabase {
    *
    * @return a string representation of the database
    */
-  @Override
-  public String toString() {
-    StringBuilder result = new StringBuilder();
-    for (Map.Entry<String, Resource> entry : resourceMapping.entrySet()) {
-      String key = entry.getKey();
-      Resource value = entry.getValue();
-      result.append("For the ").append(key).append(" Resource: \n").append(value.toString());
-    }
-    for (Request request : scheduler.getRequests()) {
-      result.append(request.toString());
-    }
-    return result.toString();
-  }
+  // @Override
+  // public String toString() {
+  //   StringBuilder result = new StringBuilder();
+  //   for (Map.Entry<String, Resource> entry : resourceMapping.entrySet()) {
+  //     String key = entry.getKey();
+  //     Resource value = entry.getValue();
+  //     result.append("For the ").append(key).append(" Resource: \n").append(value.toString());
+  //   }
+  //   for (Request request : scheduler.getRequests()) {
+  //     result.append(request.toString());
+  //   }
+  //   return result.toString();
+  // }
 
   private String resourceFilePath;
   private String requestFilePath;
