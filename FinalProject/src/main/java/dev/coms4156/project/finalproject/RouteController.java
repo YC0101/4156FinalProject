@@ -62,7 +62,7 @@ public class RouteController {
         return new ResponseEntity<>("Invalid Input Item", HttpStatus.BAD_REQUEST);
       } else {
         Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
-                            .get("columbia_resource");
+                            .get("R_COLUMBIA");
         resource.addItem(newItem.getItemId(), newItem);
         return new ResponseEntity<>(newItem.getItemId(), HttpStatus.OK);
       }
@@ -83,8 +83,8 @@ public class RouteController {
   public ResponseEntity<?> retrieveItemById(@RequestParam(value = "itemId") String itemId) {
     try {
       HashMap<String, Item> itemsMapping;
-      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
-                          .get("columbia_resource");
+      Resource resource = FinalProjectApplication.myFileDatabase.getResources()
+                          .get("R_COLUMBIA");
       itemsMapping = resource.getAllItems();
 
       if (!itemsMapping.containsKey(itemId)) {
@@ -109,7 +109,7 @@ public class RouteController {
     try {
       HashMap<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
-                          .get("columbia_resource");
+                          .get("R_COLUMBIA");
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
@@ -143,7 +143,7 @@ public class RouteController {
     try {
       HashMap<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping()
-                          .get("columbia_resource");
+                          .get("R_COLUMBIA");
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
@@ -179,7 +179,7 @@ public class RouteController {
   public ResponseEntity<?> retrieveItemsByDonor(@RequestParam(value = "donorId") String donorId) {
     try {
       HashMap<String, Item> itemsMapping;
-      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping().get("columbia_resource");
+      Resource resource = FinalProjectApplication.myFileDatabase.getResourceMapping().get("R_COLUMBIA");
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
@@ -203,7 +203,7 @@ public class RouteController {
   }
 
   private ResponseEntity<?> handleException(Exception e) {
-    System.out.println(e.toString());
+    System.err.println(e.toString());
     return new ResponseEntity<>("An Error has occurred", HttpStatus.OK);
   }
 
