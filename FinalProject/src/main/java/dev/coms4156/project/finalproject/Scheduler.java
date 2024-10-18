@@ -11,7 +11,7 @@ import java.util.Map;
 public class Scheduler {
 
   private List<Request> requests; // List of requests to process
-  private Map<String, Integer> resourceRepository; // Simulates the resource inventory
+  private Map<String, Item> resourceRepository; // Simulates the resource inventory
 
   /**
    * Constructs a Scheduler with a given list of requests and resource repository.
@@ -19,7 +19,7 @@ public class Scheduler {
    * @param requests           List of requests to be processed.
    * @param resourceRepository Map representing available resources (itemId -> quantity).
    */
-  public Scheduler(List<Request> requests, Map<String, Integer> resourceRepository) {
+  public Scheduler(List<Request> requests, Map<String, Item> resourceRepository) {
     this.requests = requests;
     this.resourceRepository = resourceRepository;
   }
@@ -43,29 +43,44 @@ public class Scheduler {
    * @param request The request to check.
    * @return true if all requested resources are available, false otherwise.
    */
-  private boolean checkResourceAvailability(Request request) {
+  public boolean checkResourceAvailability(Request request) {
     for (String itemId : request.getItemIds()) {
-      // Check if resource exists and if it has enough quantity
-      if (!resourceRepository.containsKey(itemId)
-          || resourceRepository.get(itemId) <= 0) { //<= request.getItemNumbers
+      // Check if the resource exists in the repository
+      if (!resourceRepository.containsKey(itemId)) {
+        System.out.println("Item ID " + itemId + " does not exist in the repository.");
+        return false;
+      }
+
+      // Get the item and check if it has enough quantity
+      Item item = resourceRepository.get(itemId);
+      if (item.getQuantity() <= 0) {
+//        System.out.println("Item ID " + itemId + " has insufficient quantity.");
         return false;
       }
     }
     return true;
   }
 
+
   /**
    * Schedules the dispatch for a given request by reducing resource quantities.
    *
    * @param request The request to schedule.
    */
-  private void scheduleDispatch(Request request) {
-    // Check again if all resources are available
+  public void scheduleDispatch(Request request) {
+    // Check if all resources are available
     if (checkResourceAvailability(request)) {
       for (String itemId : request.getItemIds()) {
-        if (resourceRepository.containsKey(itemId)) {
-          // Decrement resource quantity only when dispatching
-          resourceRepository.put(itemId, resourceRepository.get(itemId) - 1);
+        // Get the item from the repository
+        Item item = resourceRepository.get(itemId);
+        // Decrement the item quantity when dispatching ** TO BE MODIFIED
+        item.setQuantity(item.getQuantity() - 1);
+        System.out.println("Dispatched 1 unit of item ID: " + item.getItemId());
+
+        // If the item quantity reaches zero, update the item status
+        if (item.getQuantity() == 0) {
+          item.setStatus("dispatched");
+          System.out.println("Item ID " + item.getItemId() + " is now fully dispatched.");
         }
       }
       request.updateStatus("Dispatched");
@@ -83,15 +98,5 @@ public class Scheduler {
    */
   public void addRequest(Request request) {
     requests.add(request);
-  }
-
-  /**
-   * Displays the current status of the resource repository.
-   */
-  public void showResourceRepository() {
-    System.out.println("Resource Repository:");
-    for (Map.Entry<String, Integer> entry : resourceRepository.entrySet()) {
-      System.out.println("Item ID: " + entry.getKey() + ", Quantity: " + entry.getValue());
-    }
   }
 }
