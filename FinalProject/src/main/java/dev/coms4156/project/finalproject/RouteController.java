@@ -171,7 +171,7 @@ public class RouteController {
       @RequestParam(value = "itemId") String itemId
   ) {
     try {
-      HashMap<String, Item> itemsMapping;
+      Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
                           .get(resourceId);
       itemsMapping = resource.getAllItems();
@@ -198,7 +198,7 @@ public class RouteController {
   @GetMapping(value = "/retrieveAvailableItems", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> retrieveAvailableItems(@RequestParam(value = "resourceId") String resourceId) {
     try {
-      HashMap<String, Item> itemsMapping;
+      Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
                           .get(resourceId);
       itemsMapping = resource.getAllItems();
@@ -234,7 +234,7 @@ public class RouteController {
   @GetMapping(value = "/retrieveDispatchedItems", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> retrieveDispatchedItems(@RequestParam(value = "resourceId") String resourceId) {
     try {
-      HashMap<String, Item> itemsMapping;
+      Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
                           .get(resourceId);
       itemsMapping = resource.getAllItems();
@@ -276,7 +276,7 @@ public class RouteController {
       @RequestParam(value = "donorId") String donorId
   ) {
     try {
-      HashMap<String, Item> itemsMapping;
+      Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
                           .get(resourceId);
       itemsMapping = resource.getAllItems();
