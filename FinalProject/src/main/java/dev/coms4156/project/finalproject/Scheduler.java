@@ -34,15 +34,19 @@ public class Scheduler {
 
   /**
    * Processes all the requests by checking availability and scheduling dispatches.
+   * 
+   * @return The information about all dispatched requests.
    */
-  public void processRequests() {
+  public String processRequests() {
+    StringBuilder result = new StringBuilder();
     for (Request request : requests) {
-      if (checkResourceAvailability(request)) {
-        scheduleDispatch(request);
+      if (checkResourceAvailability(request) && "Pending".equals(request.getStatus())) {
+        result.append(scheduleDispatch(request)).append("\n");
       } else {
         System.out.println("Resource(s) unavailable for Request ID: " + request.getRequestId());
       }
     }
+    return result.toString();
   }
 
   /**
@@ -74,8 +78,9 @@ public class Scheduler {
    * Schedules the dispatch for a given request by reducing resource quantities.
    *
    * @param request The request to schedule.
+   * @return The information about the dispatched request.
    */
-  public void scheduleDispatch(Request request) {
+  public String scheduleDispatch(Request request) {
     // Check if all resources are available
     if (checkResourceAvailability(request)) {
       for (String itemId : request.getItemIds()) {
@@ -93,9 +98,11 @@ public class Scheduler {
       }
       request.updateStatus("Dispatched");
       System.out.println("Dispatch scheduled for Request ID: " + request.getRequestId());
+      return "Dispatched: " + request.toString();
     } else {
       System.out.println("Cannot dispatch Request ID: " + request.getRequestId()
           + " due to insufficient resources.");
+      return "Cannot dispatch: " + request.toString();
     }
   }
 
