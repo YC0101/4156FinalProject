@@ -2,7 +2,6 @@ package dev.coms4156.project.finalproject;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Map;
  * and items offered.
  */
 public class Resource implements Serializable {
-  public Resource(HashMap<String, Item> items, String resourceId) {
+  public Resource(Map<String, Item> items, String resourceId) {
     this.items = items;
     this.resourceId = resourceId;
   }
@@ -31,7 +30,7 @@ public class Resource implements Serializable {
    *
    * @return the hashmap containing all items.
    */
-  public HashMap<String, Item> getAllItems() {
+  public Map<String, Item> getAllItems() {
     return this.items;
   }
 
@@ -42,8 +41,7 @@ public class Resource implements Serializable {
    * @return the removed item.
    */
   public Item removeItem(String itemId) {
-    Item removedItem = this.items.remove(itemId);
-    return removedItem;
+    return this.items.remove(itemId);
   }
 
   /**
@@ -80,6 +78,7 @@ public class Resource implements Serializable {
    *
    * @return A string representing the resource.
    */
+  @Override
   public String toString() {
     StringBuilder result = new StringBuilder();
     for (Map.Entry<String, Item> entry : items.entrySet()) {
@@ -94,6 +93,6 @@ public class Resource implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 234567L;
-  private HashMap<String, Item> items;
+  private Map<String, Item> items;
   private String resourceId;
 }
