@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,11 +23,11 @@ public class MyFileDatabaseTests {
    */
   @BeforeAll
   public static void setupForTesting() {
-    testDatabase = new MyFileDatabase(true, "./resourceData.txt", "./requestData.txt");
-    testDatabaseSave = new MyFileDatabase(false, "./testResourceData.txt", "./testRequestData.txt");
+    testDatabase = new MyFileDatabase(false, "./testResourceData.txt", "./testRequestData.txt");
+    testDatabaseNull = new MyFileDatabase(false, "./testResourceData.txt", "./testRequestData.txt");
 
     Item item1 = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
-    HashMap<String, Item> items = new HashMap<>();
+    Map<String, Item> items = new HashMap<>();
     items.put(item1.getItemId(), item1);
     Resource resource1 = new Resource(items, "R_TEST");
     resourceMapping = new HashMap<>();
@@ -51,24 +51,19 @@ public class MyFileDatabaseTests {
   }
 
   @Test
-  public void deSerializeObjectFromFileTest() {
-    System.out.println("Print: " + testDatabase.deSerializeResourcesFromFile());
-    System.out.println("Print: " + testDatabase.deSerializeRequestsFromFile());
-  }
-
-  /** The testdata.txt output can be find in IndividualProject/testdata.txt. */
-  @Test
-  public void saveContentsToFileTest() {
-    testDatabaseSave.setResources(resourceMapping);
-    testDatabaseSave.setRequests(scheduler);
-    testDatabaseSave.saveResourcesToFile();
-    testDatabaseSave.saveRequestsToFile();
+  public void saveDeSerializeTest() {
+    testDatabase.setResources(resourceMapping);
+    testDatabase.setRequests(scheduler);
+    testDatabase.saveResourcesToFile();
+    testDatabase.saveRequestsToFile();
+    System.out.println("Print: " + testDatabaseNull.deSerializeResourcesFromFile());
+    System.out.println("Print: " + testDatabaseNull.deSerializeRequestsFromFile());
   }
 
   /** The test database instance for testing. */
   public static MyFileDatabase testDatabase;
-  public static MyFileDatabase testDatabaseSave;
+  public static MyFileDatabase testDatabaseNull;
 
-  public static HashMap<String, Resource> resourceMapping;
+  public static Map<String, Resource> resourceMapping;
   public static Scheduler scheduler;
 }
