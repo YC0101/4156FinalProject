@@ -210,23 +210,23 @@ All team members contribute to updating the board regularly to reflect the curre
 
 ## API Local Test Screenshots:
    Below are each API local test in Postman:
-   ###home
+   ### home
     ![Screenshots of API.](/screenshots/api1.png)
-   ###createDonation
+   ### createDonation
     ![Screenshots of API.](/screenshots/api2.png)
-   ###createRequest
+   ### createRequest
     ![Screenshots of API.](/screenshots/api3.png)
-   ###processRequests
+   ### processRequests
     ![Screenshots of API.](/screenshots/api4.png)
-   ###retrieveResource
+   ### retrieveResource
     ![Screenshots of API.](/screenshots/api5.png)
-   ###retrieveItem
+   ### retrieveItem
     ![Screenshots of API.](/screenshots/api6.png)
-   ###retrieveAvailableItems
+   ### retrieveAvailableItems
     ![Screenshots of API.](/screenshots/api7.png)
-   ###retrieveDispatchedItems
+   ### retrieveDispatchedItems
     ![Screenshots of API.](/screenshots/api8.png)
-   ###retrieveItemsByDonor
+   ### retrieveItemsByDonor
     ![Screenshots of API.](/screenshots/api9.png)
 
 ## License
