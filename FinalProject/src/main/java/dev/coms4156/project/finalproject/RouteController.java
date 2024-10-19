@@ -1,16 +1,15 @@
 package dev.coms4156.project.finalproject;
 
 import java.time.LocalDate;
-import java.util.Locale;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +34,7 @@ public class RouteController {
   /**
    * Handles the POST request for creating a new donation. It validates the input and
    * triggers the donation creation in the service layer.
-   * 
+   *
    * @param resourceId A {@code String} the unique ID of the resource the item will
    *        be added to.
    *
@@ -79,7 +78,7 @@ public class RouteController {
 
   /**
    * Handles the POST request for creating a new request. 
-   * 
+   *
    * @param requestId A {@code String} the unique ID of the request to be
    *        added to.
    *
@@ -115,8 +114,8 @@ public class RouteController {
 
   /**
    * Attempts to dispatch current requests with specified resource.
-   * 
-   * @param requestId A {@code String} the unique ID of the request to be
+   *
+   * @param resourceId A {@code String} the unique ID of the request to be
    *        added to.
    *
    * @return A {@code ResponseEntity} object containing either the information about the
@@ -196,7 +195,9 @@ public class RouteController {
    *         as a string and an HTTP 200 response or, or an error message if no items are found.
    */
   @GetMapping(value = "/retrieveAvailableItems", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> retrieveAvailableItems(@RequestParam(value = "resourceId") String resourceId) {
+  public ResponseEntity<?> retrieveAvailableItems(
+      @RequestParam(value = "resourceId") String resourceId
+  ) {
     try {
       Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
@@ -225,14 +226,16 @@ public class RouteController {
 
   /**
    * Returns all dispatched items, that is, items with status code 'dispatched'.
-   * 
+   *
    * @param resourceId A {@code String} the unique ID of the resource.
    *
    * @return A {@code ResponseEntity} object containing either the details of all dispatched items
    *         as a string and an HTTP 200 response or, or an error message if no items are found.
    */
   @GetMapping(value = "/retrieveDispatchedItems", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> retrieveDispatchedItems(@RequestParam(value = "resourceId") String resourceId) {
+  public ResponseEntity<?> retrieveDispatchedItems(
+      @RequestParam(value = "resourceId") String resourceId
+  ) {
     try {
       Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
@@ -261,7 +264,7 @@ public class RouteController {
 
   /**
    * Returns the details of the items provided by a specified donor.
-   * 
+   *
    * @param resourceId A {@code String} the unique ID of the resource.
    *
    * @param donorId A{@code String} representing the ID of the donor who provided 

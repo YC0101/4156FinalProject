@@ -24,7 +24,7 @@ public class MyFileDatabaseTests {
   @BeforeAll
   public static void setupForTesting() {
     testDatabase = new MyFileDatabase(true, "./resourceData.txt", "./requestData.txt");
-    testDatabaseSave = new MyFileDatabase(true, "./testResourceData.txt", "./testRequestData.txt");
+    testDatabaseSave = new MyFileDatabase(false, "./testResourceData.txt", "./testRequestData.txt");
 
     Item item1 = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
     HashMap<String, Item> items = new HashMap<>();
@@ -33,8 +33,8 @@ public class MyFileDatabaseTests {
     resourceMapping = new HashMap<>();
     resourceMapping.put("R_TEST", resource1);
 
-    Request request1 = new Request("REQ1", Arrays.asList("ABCD", "EFGH"), 
-    "Pending", "High", "John Doe");
+    Request request1 = new Request("REQ1", Arrays.asList("ABCD", "EFGH"), "Pending", 
+        "High", "John Doe");
     scheduler = new Scheduler(Arrays.asList(request1));
   }
 

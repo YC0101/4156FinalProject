@@ -34,8 +34,8 @@ public class Scheduler {
 
   /**
    * Processes all the requests by checking availability and scheduling dispatches.
-   * 
-   * @return The information about all dispatched requests
+   *
+   * @return the information about all dispatched requests
    */
   public String processRequests() {
     StringBuilder result = new StringBuilder();
@@ -66,7 +66,7 @@ public class Scheduler {
       // Get the item and check if it has enough quantity
       Item item = resourceRepository.get(itemId);
       if (item.getQuantity() <= 0) {
-//        System.out.println("Item ID " + itemId + " has insufficient quantity.");
+        // System.out.println("Item ID " + itemId + " has insufficient quantity.");
         return false;
       }
     }
