@@ -77,8 +77,8 @@ public class MyFileDatabase {
   public Scheduler deSerializeRequestsFromFile() {
     try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(requestFilePath))) {
       Object obj = in.readObject();
-      if (obj instanceof HashMap) {
-        return new Scheduler((ArrayList<Request>) obj);
+      if (obj instanceof List) {
+        return new Scheduler((List<Request>) obj);
       } else {
         throw new IllegalArgumentException("Invalid request object type in file.");
       }

@@ -4,8 +4,7 @@ import jakarta.annotation.PreDestroy;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * The main class to start the Spring Boot application for the FinalProject.
  */
 @SpringBootApplication
-public class FinalProjectApplication {
+public class FinalProjectApplication implements CommandLineRunner {
 
   public static void main(String[] args) {
     SpringApplication.run(FinalProjectApplication.class, args);
@@ -21,9 +20,8 @@ public class FinalProjectApplication {
 
   /**
    * This contains all the setup logic, it will mainly be focused on loading up 
-   * and creating an instance of the database based
-   * off a saved file or will create a fresh database if the file
-   * is not present.
+   * and creating an instance of the database based off a saved file or will create 
+   * a fresh database if the file is not present.
    *
    * @param args A {@code String[]} of any potential runtime args
    */
@@ -31,7 +29,9 @@ public class FinalProjectApplication {
     for (String arg : args) {
       if ("setup".equals(arg)) {
         myFileDatabase = new MyFileDatabase(false, "./resourceData.txt", "./requestData.txt"); // Reset data
+        System.out.println("-- Initilizing Database");
         resetDataFile();
+        System.out.println("-- Done Initilizing Database");
         System.out.println("System Setup");
         return;
       }
@@ -63,7 +63,7 @@ public class FinalProjectApplication {
     foodItems[4] = new Item("Food-Seafood", 199, LocalDate.now().plusDays(3), "Amy");
     HashMap<String, Item> items = new HashMap<>();
     for (int i = 0; i < foodItems.length; i++) {
-      items.put(foodItems[i].getItemId(), foodItems[0]);
+      items.put(foodItems[i].getItemId(), foodItems[i]);
     }
 
     Item[] hygieneItems = new Item[5]; 
@@ -73,7 +73,7 @@ public class FinalProjectApplication {
     hygieneItems[3] = new Item("Hygiene", 30, LocalDate.now().plusDays(60), "Benjamin");
     hygieneItems[4] = new Item("Hygiene", 90, LocalDate.now().plusDays(90), "Robert");
     for (int i = 0; i < hygieneItems.length; i++) {
-      items.put(hygieneItems[i].getItemId(), hygieneItems[0]);
+      items.put(hygieneItems[i].getItemId(), hygieneItems[i]);
     }
 
     Item[] clothingItems = new Item[5]; 
@@ -83,7 +83,7 @@ public class FinalProjectApplication {
     clothingItems[3] = new Item("Clothing", 10, LocalDate.now().plusDays(360), "Amy");
     clothingItems[4] = new Item("Clothing", 8, LocalDate.now().plusDays(360), "Mason");
     for (int i = 0; i < clothingItems.length; i++) {
-      items.put(clothingItems[i].getItemId(), clothingItems[0]);
+      items.put(clothingItems[i].getItemId(), clothingItems[i]);
     }
 
     Item[] medicineItems = new Item[5]; 
@@ -93,7 +93,7 @@ public class FinalProjectApplication {
     medicineItems[3] = new Item("Medicine", 5, LocalDate.now().plusDays(120), "Isabella");
     medicineItems[4] = new Item("Medicine", 25, LocalDate.now().plusDays(30), "Sophia");
     for (int i = 0; i < medicineItems.length; i++) {
-      items.put(medicineItems[i].getItemId(), medicineItems[0]);
+      items.put(medicineItems[i].getItemId(), medicineItems[i]);
     }
 
     Item[] drinkItems = new Item[5];
@@ -103,7 +103,7 @@ public class FinalProjectApplication {
     drinkItems[3] = new Item("Drink", 25, LocalDate.now().plusDays(5), "Amy");
     drinkItems[4] = new Item("Drink", 60, LocalDate.now().plusDays(30), "Amy");
     for (int i = 0; i < drinkItems.length; i++) {
-      items.put(drinkItems[i].getItemId(), drinkItems[0]);
+      items.put(drinkItems[i].getItemId(), drinkItems[i]);
     }
     Resource resource1 = new Resource(items, "R_COLUMBIA");
     HashMap<String, Resource> resourceMapping = new HashMap<>();

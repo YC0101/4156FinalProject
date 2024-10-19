@@ -1,6 +1,7 @@
 package dev.coms4156.project.finalproject;
 
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,9 +50,8 @@ public class RouteController {
    * @param donorId A{@code String} representing the ID of the donor who provided 
    *        the item.
    *
-   * @return A {@code ResponseEntity} object containing either the unique ID of
-   *         the created item and an HTTP 200 response or, an appropriate message indicating 
-   *         the proper response.
+   * @return A {@code ResponseEntity} object containing either the created item as a string
+   *         and an HTTP 200 response or, an appropriate message indicating the proper response.
    */
   @PostMapping(value = "/createDonation", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> createDonation(
@@ -68,9 +68,9 @@ public class RouteController {
         return new ResponseEntity<>("Invalid Input Item", HttpStatus.BAD_REQUEST);
       } else {
         Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                            .get(resourceId);
+                            .get(resourceId.toUpperCase(Locale.ENGLISH));
         resource.addItem(newItem.getItemId(), newItem);
-        return new ResponseEntity<>(newItem.getItemId(), HttpStatus.OK);
+        return new ResponseEntity<>(newItem.toString(), HttpStatus.OK);
       }
     } catch (Exception e) {
       return handleException(e);
@@ -128,7 +128,7 @@ public class RouteController {
     try {
       Scheduler scheduler = FinalProjectApplication.myFileDatabase.getRequests();
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                            .get(resourceId);
+                            .get(resourceId.toUpperCase(Locale.ENGLISH));
       scheduler.setResource(resource);
       return new ResponseEntity<>(scheduler.processRequests(), HttpStatus.OK);
     } catch (Exception e) {
@@ -148,7 +148,7 @@ public class RouteController {
   public ResponseEntity<?> retrieveResource(@RequestParam(value = "resourceId") String resourceId) {
     try {
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                          .get(resourceId);
+                          .get(resourceId.toUpperCase(Locale.ENGLISH));
       return new ResponseEntity<>(resource.toString(), HttpStatus.OK);
     } catch (Exception e) {
       return handleException(e);
@@ -173,7 +173,7 @@ public class RouteController {
     try {
       Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                          .get(resourceId);
+                          .get(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
 
       if (!itemsMapping.containsKey(itemId)) {
@@ -200,7 +200,7 @@ public class RouteController {
     try {
       Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                          .get(resourceId);
+                          .get(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
@@ -236,7 +236,7 @@ public class RouteController {
     try {
       Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                          .get(resourceId);
+                          .get(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
@@ -278,7 +278,7 @@ public class RouteController {
     try {
       Map<String, Item> itemsMapping;
       Resource resource = FinalProjectApplication.myFileDatabase.getResources()
-                          .get(resourceId);
+                          .get(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
 
       StringBuilder result = new StringBuilder();
@@ -305,6 +305,5 @@ public class RouteController {
     System.err.println(e.toString());
     return new ResponseEntity<>("An Error has occurred", HttpStatus.OK);
   }
-
 
 }
