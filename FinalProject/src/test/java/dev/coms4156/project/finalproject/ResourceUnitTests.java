@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -80,8 +79,8 @@ public class ResourceUnitTests {
   public static Item testItem;
   public static Item testItem2;
   public static Item testItem3;
-  public static Map<String, Item> testItemMap;
-  public static Map<String, Item> testItemMap2;
+  public static HashMap<String, Item> testItemMap;
+  public static HashMap<String, Item> testItemMap2;
   public static Resource testResource;
   public static Resource testResource2;
 }

@@ -35,7 +35,7 @@ public class Scheduler {
   /**
    * Processes all the requests by checking availability and scheduling dispatches.
    * 
-   * @return The information about all dispatched requests.
+   * @return The information about all dispatched requests
    */
   public String processRequests() {
     StringBuilder result = new StringBuilder();

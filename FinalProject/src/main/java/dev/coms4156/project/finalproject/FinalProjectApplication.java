@@ -28,7 +28,8 @@ public class FinalProjectApplication implements CommandLineRunner {
   public void run(String[] args) {
     for (String arg : args) {
       if ("setup".equals(arg)) {
-        myFileDatabase = new MyFileDatabase(false, "./resourceData.txt", "./requestData.txt"); // Reset data
+        myFileDatabase = new MyFileDatabase(false, "./resourceData.txt", 
+          "./requestData.txt"); // Reset data
         System.out.println("-- Initilizing Database");
         resetDataFile();
         System.out.println("-- Done Initilizing Database");
@@ -43,7 +44,7 @@ public class FinalProjectApplication implements CommandLineRunner {
   /**
    * Overrides the database reference, used when testing.
    *
-   * @param testData A {@code MyFileDatabase} object referencing test data.
+   * @param testDatabase A {@code MyFileDatabase} object referencing test data.
    */
   public static void overrideDatabase(MyFileDatabase testDatabase) {
     myFileDatabase = testDatabase;
@@ -116,11 +117,13 @@ public class FinalProjectApplication implements CommandLineRunner {
     "Pending", "High", "John Doe");
     requests[1] = new Request("REQ2", Arrays.asList(drinkItems[1].getItemId()), 
     "Pending", "Low", "Alice Doe");
-    requests[2] = new Request("REQ3", Arrays.asList(clothingItems[2].getItemId(), medicineItems[1].getItemId()), 
+    requests[2] = new Request("REQ3", Arrays.asList(clothingItems[2].getItemId(), 
+      medicineItems[1].getItemId()), 
     "Pending", "Medium", "John Doe");
     requests[3] = new Request("REQ4", Arrays.asList(clothingItems[2].getItemId()), 
     "Pending", "High", "Jane Doe");
-    requests[4] = new Request("REQ5", Arrays.asList(hygieneItems[3].getItemId(), clothingItems[2].getItemId()), 
+    requests[4] = new Request("REQ5", Arrays.asList(hygieneItems[3].getItemId(), 
+      clothingItems[2].getItemId()), 
     "Pending", "High", "Sara Doe");
 
     myFileDatabase.setRequests(new Scheduler(Arrays.asList(requests)));
