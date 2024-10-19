@@ -27,6 +27,9 @@ public class SchedulerUnitTests {
   private Map<String, Item> resourceRepository;
   private List<Request> requests;
 
+  /**
+   * Create variable for testing.
+   */
   @BeforeEach
   public void setUp() {
     // Initialize the resource repository with some items

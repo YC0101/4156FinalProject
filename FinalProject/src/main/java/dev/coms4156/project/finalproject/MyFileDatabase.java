@@ -37,7 +37,7 @@ public class MyFileDatabase {
    *
    * @param resourceMapping the mapping of Resource ID to Resource objects
    */
-  public void setResources(HashMap<String, Resource> resourceMapping) {
+  public void setResources(Map<String, Resource> resourceMapping) {
     this.resourceMapping = resourceMapping;
   }
 
@@ -55,7 +55,7 @@ public class MyFileDatabase {
    *
    * @return the deserialized Resource mapping
    */
-  public HashMap<String, Resource> deSerializeResourcesFromFile() {
+  public Map<String, Resource> deSerializeResourcesFromFile() {
     try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(resourceFilePath))) {
       Object obj = in.readObject();
       if (obj instanceof HashMap) {
@@ -119,7 +119,7 @@ public class MyFileDatabase {
    *
    * @return the Resource mapping
    */
-  public HashMap<String, Resource> getResources() {
+  public Map<String, Resource> getResources() {
     return this.resourceMapping;
   }
 
@@ -153,6 +153,6 @@ public class MyFileDatabase {
 
   private String resourceFilePath;
   private String requestFilePath;
-  private HashMap<String, Resource> resourceMapping;
+  private Map<String, Resource> resourceMapping;
   private Scheduler scheduler;
 }
