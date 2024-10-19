@@ -1,5 +1,6 @@
 package dev.coms4156.project.finalproject;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import java.util.List;
  * tracking its status, items involved, and other details.
  */
 public class Request implements Serializable {
+  
+  @Serial
+  private static final long serialVersionUID = 345678L;
   private String requestId;
   private List<String> itemIds;
   private String status;

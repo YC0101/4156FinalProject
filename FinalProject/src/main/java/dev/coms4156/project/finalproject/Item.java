@@ -1,5 +1,6 @@
 package dev.coms4156.project.finalproject;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -11,6 +12,8 @@ import java.util.UUID;
  */
 public class Item implements Serializable {
 
+  @Serial
+  private static final long serialVersionUID = 123456L;
   private String itemId;       // Unique identifier for the item
   private String itemType;     // Type of the item (e.g., "Food", "Clothing")
   private int quantity;        // Quantity of the item
