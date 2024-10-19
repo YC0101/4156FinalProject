@@ -5,9 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -44,7 +44,7 @@ public class MyFileDatabase {
   /**
    * Sets the Request List of the database.
    *
-   * @param requests the List of Request objects
+   * @param scheduler the scheduler containing the list of Request objects
    */
   public void setRequests(Scheduler scheduler) {
     this.scheduler = scheduler;
@@ -89,8 +89,8 @@ public class MyFileDatabase {
   }
 
   /**
-   * Saves the contents of the internal data structure of resource to the file. Note that contents of 
-   * the file are overwritten through this operation.
+   * Saves the contents of the internal data structure of resource to the file. Note that 
+   * contents of the file are overwritten through this operation.
    */
   public void saveResourcesToFile() {
     try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(resourceFilePath))) {
@@ -102,8 +102,8 @@ public class MyFileDatabase {
   }
 
   /**
-   * Saves the contents of the internal data structure of request to the file. Note that contents of 
-   * the file are overwritten through this operation.
+   * Saves the contents of the internal data structure of request to the file. Note that 
+   * contents of the file are overwritten through this operation.
    */
   public void saveRequestsToFile() {
     try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(requestFilePath))) {
@@ -124,7 +124,7 @@ public class MyFileDatabase {
   }
 
   /**
-   * Gets the Request List of the database as a Scheduler Object
+   * Gets the Request List of the database as a Scheduler Object.
    *
    * @return the Request List
    */

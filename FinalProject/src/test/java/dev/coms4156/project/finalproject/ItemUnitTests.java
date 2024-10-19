@@ -16,7 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * This class contains unit tests for the Item class.
  */
-@SpringBootTest(classes = FinalProjectApplication.class)
+@SpringBootTest
 @ContextConfiguration
 public class ItemUnitTests {
 

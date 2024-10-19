@@ -21,9 +21,8 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * Test class for the Request class.
  */
-@SpringBootTest(classes = FinalProjectApplication.class)
+@SpringBootTest
 @ContextConfiguration
-
 public class RequestUnitTests {
   private Request request;
   private String requestId = "REQ123";
