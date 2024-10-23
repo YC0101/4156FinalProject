@@ -300,6 +300,7 @@ We are using **GitHub Projects** for project management. All tasks, issues, and 
 You can view our **GitHub Projects** board [here](https://github.com/YC0101/4156FinalProject_ctrlZHeroes/projects/1).
 
 ### Task Breakdown:
+  Details can be found in repo/Project
 
 - **Yanxi Chen**: Resource class implementation and testing.
 - **Qirui Ruan**: Item class implementation and testing.
@@ -320,24 +321,35 @@ All team members contribute to updating the board regularly to reflect the curre
 ## API Local Test Screenshots:
 
    Below are each API local test in Postman:
-   ###home
+   ### home
     ![Screenshots of API.](/screenshots/api1.png)
-   ###createDonation
+   ### createDonation
     ![Screenshots of API.](/screenshots/api2.png)
-   ###createRequest
+   ### createRequest
     ![Screenshots of API.](/screenshots/api3.png)
-   ###processRequests
+   ### processRequests
     ![Screenshots of API.](/screenshots/api4.png)
-   ###retrieveResource
+   ### retrieveResource
     ![Screenshots of API.](/screenshots/api5.png)
-   ###retrieveItem
+   ### retrieveItem
     ![Screenshots of API.](/screenshots/api6.png)
-   ###retrieveAvailableItems
+   ### retrieveAvailableItems
     ![Screenshots of API.](/screenshots/api7.png)
-   ###retrieveDispatchedItems
+   ### retrieveDispatchedItems
     ![Screenshots of API.](/screenshots/api8.png)
-   ###retrieveItemsByDonor
+   ### retrieveItemsByDonor
     ![Screenshots of API.](/screenshots/api9.png)
+
+## API GCP Test Links:
+    Default/Home: https://ase-team.ue.r.appspot.com/
+    createDonation: https://ase-team.ue.r.appspot.com/createDonation?resourceId=R_COLUMBIA&itemType=Food&quantity=3&expirationDate=2025-03-11&donorId=Robert
+    createRequest: https://ase-team.ue.r.appspot.com/createRequest?requestId=testRequest&itemIds=fake&status=Pending&priorityLevel=High&requesterInfo=John Doe
+    processRequest: https://ase-team.ue.r.appspot.com/processRequests?resourceId=R_COLUMBIA
+    retrieveResource: https://ase-team.ue.r.appspot.com/retrieveResource?resourceId=R_COLUMBIA
+    retrieveItem: https://ase-team.ue.r.appspot.com/retrieveItem?resourceId=R_COLUMBIA&itemId=90bebb7d-d1a1-4a7c-898b-9cac2530fb6b
+    retrieveAvailableItems: https://ase-team.ue.r.appspot.com/retrieveAvailableItems?resourceId=R_COLUMBIA 
+    retrieveDispatchedItems: https://ase-team.ue.r.appspot.com/retrieveDispatchedItems?resourceId=R_COLUMBIA 
+    retrieveItemsByDonor: https://ase-team.ue.r.appspot.com/retrieveItemsByDonor?resourceId=R_COLUMBIA&donorId=Robert 
 
 ## License
 
