@@ -43,7 +43,7 @@ For detailed info about endpoints, check the "Endpoints" section.
 
 ## Running a Cloud-based Instance 
 
-This service is also deployed to the cloud leveraging the Google Cloud Platform (GCP). You can conveniently access our service without the need for a local setup through https://ase-team.ue.r.appspot.com/. A welcome message will be displayed upon accessing the URL if the cloud service is functioning correctly. When using Postman for testing, direct your requests to the following format `https://ase-team.ue.r.appspot.com/endpoint?arg=value`
+This service is also deployed to the cloud leveraging the Google Cloud Platform (GCP). You can conveniently access our service without the need for a local setup through https://ase-team.ue.r.appspot.com/! A welcome message will be displayed upon accessing the URL if the cloud service is functioning correctly. When using Postman for testing, direct your requests to the following format `https://ase-team.ue.r.appspot.com/endpoint?arg=value`. This configuration enables you to fully utilize our service.
 
 Welcome to test and try the functionalities!
 
