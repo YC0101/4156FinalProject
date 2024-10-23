@@ -208,7 +208,7 @@ public class RouteController {
       for (Map.Entry<String, Item> entry : itemsMapping.entrySet()) {
         String itemId = entry.getKey();
         Item item = entry.getValue();
-        if (item.getStatus() == "available") {
+        if ("available".equals(item.getStatus())) {
           result.append(itemId).append(": ").append(item.toString())
           .append("\n");
         }
@@ -246,7 +246,7 @@ public class RouteController {
       for (Map.Entry<String, Item> entry : itemsMapping.entrySet()) {
         String itemId = entry.getKey();
         Item item = entry.getValue();
-        if (item.getStatus() == "dispatched") {
+        if ("dispatched".equals(item.getStatus())) {
           result.append(itemId).append(": ").append(item.toString())
           .append("\n");
         }
@@ -288,7 +288,7 @@ public class RouteController {
       for (Map.Entry<String, Item> entry : itemsMapping.entrySet()) {
         String itemId = entry.getKey();
         Item item = entry.getValue();
-        if (item.getDonorId() == donorId) {
+        if (donorId.equals(item.getDonorId())) {
           result.append(itemId).append(": ").append(item.toString())
           .append("\n");
         }
