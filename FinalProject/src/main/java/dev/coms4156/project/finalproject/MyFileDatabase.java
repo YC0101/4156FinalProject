@@ -78,7 +78,7 @@ public class MyFileDatabase {
     try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(requestFilePath))) {
       Object obj = in.readObject();
       if (obj instanceof List) {
-        return new Scheduler((List<Request>) obj);
+        return new Scheduler(new ArrayList<Request>((List<Request>) obj));
       } else {
         throw new IllegalArgumentException("Invalid request object type in file.");
       }
