@@ -35,7 +35,7 @@ public class Resource implements Serializable {
   }
 
   /**
-   * Returns a map of all stored items.
+   * Remove an item and returns the item removed.
    *
    * @param itemId             The ID of the removing item.
    * @return the removed item.
@@ -74,7 +74,8 @@ public class Resource implements Serializable {
 
 
   /**
-   * Returns a string representation of the resource, including its code and the courses offered.
+   * Returns a string representation of the resource, including its id and
+   * items inside.
    *
    * @return A string representing the resource.
    */
