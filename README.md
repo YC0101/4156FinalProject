@@ -1,6 +1,6 @@
 # COMS-4156-Project
 
-This is the Github repository for the service portion of the Team Project associated with COMS 4156 Advanced Software Engineering..
+This is the Github repository for the service portion of the Team Project associated with COMS 4156 Advanced Software Engineering.
 Our group, ctrlZHeroes, contains members: Yanxi Chen, Qirui Ruan, Xinchen Zhang, Songwen Zhao, Charlie Shen.
 
 ## Viewing original assignment repo 
@@ -9,15 +9,15 @@ Please use the following link to view the repository relevant to the app: https:
 
 ## Service Overview
 
- Our Service,  Resource Management System (RMS), is designed to streamline the process of donating, requesting, and dispatching essential resources such as food, medical supplies, clothing, and other vital goods. The service aims at helping shelters, community centers, and individuals in need, by providing an organized and accessible platform.
+Our Service, Resource Management System (RMS), is designed to streamline the process of donating, requesting, and dispatching essential resources such as food, medical supplies, clothing, and other vital goods. The service aims at helping shelters, community centers, and individuals in need, by providing an organized and accessible platform.
 
 ## Building and Running a Local Instance
 
-Before using this service, please follow the steps below to set up environment for MacOS.
+Before using this service, please follow the steps below to set up environment (This guide assumes a MacOS environment, the Maven README provides instructions compatible with both Windows and Mac):
 
 1. Maven 3.9.5: https://maven.apache.org/download.cgi Download and follow the installation instructions.
 2. JDK 17: This project used JDK 17 for development https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html 
-3. IntelliJ IDE: https://www.jetbrains.com/idea/
+3. IntelliJ IDE: https://www.jetbrains.com/idea/ Feel free to use any other IDE that you feel comfortable with.
 4. After you clone this project, go to /FinalProject and run ```mvn spring-boot:run -Dspring-boot.run.arguments="setup"``` for MacOS. Leave it running until you see “System Setup” in the terminal then terminate the program.
 5. After initializes the database in step 4, you may run the project using ```mvn spring-boot:run```
 6. If you wish to check the style, run ```mvn checkstyle:check```; to see coverage report, run ```mvn jacoco:report``` and open the coverage report in the target/site/jacoco.
@@ -32,13 +32,20 @@ Before using this service, please follow the steps below to set up environment f
    ```mvn spring-boot:run -Dspring-boot.run.arguments="setup"```
 4. After the database has been initialized, start the service:
    ```mvn spring-boot:run```   
-5. To check for style issues, run:
+5. Once the application is running, you can access it via a web browser or Postman at `localhost:8080`.
+6. To check for style issues, run:
    ```mvn checkstyle:check```
-6. To generate a coverage report, run:
+7. To generate a coverage report, run:
    ```mvn jacoco:report```
    Open the coverage report in ```target/site/jacoco```.
 
 For detailed info about endpoints, check the "Endpoints" section.
+
+## Running a Cloud-based Instance 
+
+This service is also deployed to the cloud leveraging the Google Cloud Platform (GCP). You can conveniently access our service without the need for a local setup through https://ase-team.ue.r.appspot.com/. A welcome message will be displayed upon accessing the URL if the cloud service is functioning correctly. When using Postman for testing, direct your requests to the following format `https://ase-team.ue.r.appspot.com/endpoint?arg=value`
+
+Welcome to test and try the functionalities!
 
 ## Class Overview
 
