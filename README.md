@@ -9,7 +9,31 @@ Please use the following link to view the repository relevant to the app: https:
 
 ## Service Overview
 
-Our Service, Resource Management System (RMS), is designed to streamline the process of donating, requesting, and dispatching essential resources such as food, medical supplies, clothing, and other vital goods. The service aims at helping shelters, community centers, and individuals in need, by providing an organized and accessible platform.
+Our Service, Resource Management System (RMS), is designed to streamline the process of donating, requesting, and dispatching essential resources such as food, medical supplies, clothing, and other vital goods. The **RMS** provides a series of functions aimed at efficient resource management. Key functionalities include:
+- **Donation Management**: Enabling donors to contribute resources, defining types, quantities, and expiration dates.
+- **Request Handling**: Allowing users to request resources based on need, specify priorities, and update statuses.
+- **Resource Dispatching**: Scheduling and fulfilling requests by matching available resources to meet demands.
+
+The service aims at helping shelters, community centers, and individuals in need, by providing an organized and accessible platform. This system includes a cloud-deployed version for remote access, allowing users to interact with the service without needing a local setup.
+
+---
+
+## Bookmark Overview
+
+To guide users effectively, here is a bookmark-based outline for easy navigation through the README:
+
+1. [Class Overview](#class-overview)
+2. [Endpoints](#endpoints)
+3. [Building and Running a Local Instance](#building-and-running-a-local-instance)
+4. [Running a Cloud-based Instance](#running-a-cloud-based-instance)
+5. [Testing the Service](#tests)
+6. [API Local Test Screenshots](#api-local-test-screenshots)
+7. [API GCP Test Links](#api-gcp-test-links)
+7. [Project Management and Contributions](#project-management-and-contributions)
+
+These bookmarks provide direct links to each major section, allowing quick access to detailed instructions, endpoint definitions, testing information, and team contributions.  
+
+---
 
 ## Building and Running a Local Instance
 
@@ -45,7 +69,7 @@ For detailed info about endpoints, check the "Endpoints" section.
 
 This service is also deployed to the cloud leveraging the Google Cloud Platform (GCP). You can conveniently access our service without the need for a local setup through https://ase-team.ue.r.appspot.com/! A welcome message will be displayed upon accessing the URL if the cloud service is functioning correctly. When using Postman for testing, direct your requests to the following format `https://ase-team.ue.r.appspot.com/endpoint?arg=value`. This configuration enables you to fully utilize our service.
 
-Welcome to test and try the functionalities!
+Welcome to test and try the functionalities! If you want to explore steps to deploy RMS to GCP, check [Steps to deploy to GCP](#steps-to-deploy-to-GCP)
 
 ## Class Overview
 
@@ -350,6 +374,24 @@ All team members contribute to updating the board regularly to reflect the curre
     retrieveAvailableItems: https://ase-team.ue.r.appspot.com/retrieveAvailableItems?resourceId=R_COLUMBIA 
     retrieveDispatchedItems: https://ase-team.ue.r.appspot.com/retrieveDispatchedItems?resourceId=R_COLUMBIA 
     retrieveItemsByDonor: https://ase-team.ue.r.appspot.com/retrieveItemsByDonor?resourceId=R_COLUMBIA&donorId=Robert 
+
+## Steps to deploy to GCP
+This project can be deployed on Google Cloud Platform (GCP). Follow the steps below to deploy it on GCP.
+
+You can deploy the application to GCP, open the application in your browser, and even test it on GCP.
+   ```
+   gcloud config set project YOUR_PROJECT_ID
+
+   gcloud app deploy
+ 
+   gcloud app browse
+   ```
+
+### Testing on GCP
+You can test your deployed service using Postman. The base URL will be:
+```
+https://YOUR_PROJECT_ID.ue.r.appspot.com/endpoint?arg=value%
+```
 
 ## License
 
