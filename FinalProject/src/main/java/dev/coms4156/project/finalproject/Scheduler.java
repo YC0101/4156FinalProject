@@ -1,7 +1,11 @@
 package dev.coms4156.project.finalproject;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * This class represents a scheduler that processes requests and schedules dispatches based on
@@ -15,7 +19,7 @@ public class Scheduler {
   /**
    * Constructs a Scheduler with a given list of requests and resource repository.
    *
-   * @param requests           List of requests to be processed.
+   * @param requests List of requests to be processed.
    * @param resourceRepository Map representing available resources (itemId -> quantity).
    */
   public Scheduler(List<Request> requests, Map<String, Item> resourceRepository) {
@@ -26,7 +30,7 @@ public class Scheduler {
   /**
    * Constructs a Scheduler with a given list of requests.
    *
-   * @param requests           List of requests to be processed.
+   * @param requests List of requests to be processed.
    */
   public Scheduler(List<Request> requests) {
     this.requests = requests;
@@ -35,18 +39,23 @@ public class Scheduler {
   /**
    * Processes all the requests by checking availability and scheduling dispatches.
    *
-   * @return the information about all dispatched requests
+   * @return the information about all dispatched requests and used items
    */
-  public String processRequests() {
-    StringBuilder result = new StringBuilder();
+  public Pair<List<Request>, Set<Item>> processRequests() {
+    List<Request> dispatchedRequests = new ArrayList<Request>();
+    Set<Item> usedItems = new LinkedHashSet<>();
     for (Request request : requests) {
-      if (checkResourceAvailability(request) && "Pending".equals(request.getStatus())) {
-        result.append(scheduleDispatch(request)).append("\n");
-      } else {
-        System.out.println("Resource(s) unavailable for Request ID: " + request.getRequestId());
+      if ("Pending".equals(request.getStatus())) {
+        if (checkResourceAvailability(request)) {
+          List<Item> items = scheduleDispatch(request);
+          dispatchedRequests.add(request);
+          usedItems.addAll(items);
+        } else {
+          System.out.println("Resource unavailable for Request ID: " + request.getRequestId());
+        }
       }
     }
-    return result.toString();
+    return Pair.of(dispatchedRequests, usedItems);
   }
 
   /**
@@ -78,9 +87,10 @@ public class Scheduler {
    * Schedules the dispatch for a given request by reducing resource quantities.
    *
    * @param request The request to schedule.
-   * @return The information about the dispatched request.
+   * @return A List of items used.
    */
-  public String scheduleDispatch(Request request) {
+  public List<Item> scheduleDispatch(Request request) {
+    List<Item> usedItems = new ArrayList<>();
     // Check if all resources are available
     if (checkResourceAvailability(request)) {
       for (String itemId : request.getItemIds()) {
@@ -95,15 +105,15 @@ public class Scheduler {
           item.setStatus("dispatched");
           System.out.println("Item ID " + item.getItemId() + " is now fully dispatched.");
         }
+        usedItems.add(item);
       }
-      request.updateStatus("Dispatched");
+      request.setStatus("Dispatched");
       System.out.println("Dispatch scheduled for Request ID: " + request.getRequestId());
-      return "Dispatched: " + request.toString();
     } else {
       System.out.println("Cannot dispatch Request ID: " + request.getRequestId()
           + " due to insufficient resources.");
-      return "Cannot dispatch: " + request.toString();
     }
+    return usedItems;
   }
 
   /**

@@ -116,6 +116,10 @@ public class Item implements Serializable {
     this.status = status;
   }
 
+  public void setItemId(String itemId) {
+    this.itemId = itemId;
+  }
+
   /**
    * Provides a string representation of the item.
    *

@@ -52,9 +52,9 @@ public class RequestUnitTests {
   }
 
   @Test
-  public void testUpdateStatus() {
+  public void testSetStatus() {
     String newStatus = "fulfilled";
-    request.updateStatus(newStatus);
+    request.setStatus(newStatus);
     assertEquals(newStatus, request.getStatus(), "Status should be updated to 'fulfilled'.");
   }
 

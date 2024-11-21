@@ -84,10 +84,10 @@ public class Request implements Serializable {
   /**
    * Updates the status of the request.
    *
-   * @param newStatus New status to set for the request.
+   * @param status New status to set for the request.
    */
-  public void updateStatus(String newStatus) {
-    this.status = newStatus;
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   /**
@@ -97,5 +97,16 @@ public class Request implements Serializable {
    */
   public void updatePriority(String newPriority) {
     this.priorityLevel = newPriority;
+  }
+
+    /**
+   * Provides a string representation of the request.
+   *
+   * @return A string describing the request and its attributes.
+   */
+  @Override
+  public String toString() {
+    return "Request[ID=" + requestId + ", itemIds=" + itemIds + ", Status=" + status
+        + ", priorityLevel=" + priorityLevel + ", requesterInfo=" + requesterInfo + "]";
   }
 }
