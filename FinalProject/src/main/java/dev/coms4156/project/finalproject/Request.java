@@ -5,11 +5,11 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * This class represents a request for resources,
- * tracking its status, items involved, and other details.
+ * This class represents a request for resources, tracking its status, items involved, and other
+ * details.
  */
 public class Request implements Serializable {
-  
+
   @Serial
   private static final long serialVersionUID = 345678L;
   private String requestId;
@@ -27,8 +27,8 @@ public class Request implements Serializable {
    * @param priorityLevel Priority level of the request.
    * @param requesterInfo Information about the requester.
    */
-  public Request(String requestId, List<String> itemIds,
-      String status, String priorityLevel, String requesterInfo) {
+  public Request(String requestId, List<String> itemIds, String status, String priorityLevel,
+      String requesterInfo) {
     this.requestId = requestId;
     this.itemIds = itemIds;
     this.status = status;
@@ -99,7 +99,7 @@ public class Request implements Serializable {
     this.priorityLevel = newPriority;
   }
 
-    /**
+  /**
    * Provides a string representation of the request.
    *
    * @return A string describing the request and its attributes.
@@ -108,5 +108,22 @@ public class Request implements Serializable {
   public String toString() {
     return "Request[ID=" + requestId + ", itemIds=" + itemIds + ", Status=" + status
         + ", priorityLevel=" + priorityLevel + ", requesterInfo=" + requesterInfo + "]";
+  }
+
+  /**
+   * Returns whether the other object is equal to this one (deep comparison).
+   * 
+   * @return The other object.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof Request))
+      return false;
+    Request request = (Request) o;
+    return requestId.equals(request.requestId) && itemIds.equals(request.itemIds)
+        && status.equals(request.status) && priorityLevel.equals(request.priorityLevel)
+        && requesterInfo.equals(request.requesterInfo);
   }
 }

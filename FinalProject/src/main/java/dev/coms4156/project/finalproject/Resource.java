@@ -5,9 +5,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Represents a resource providing different items.
- * This class stores information about the resource, including its resourceId,
- * and items offered.
+ * Represents a resource providing different items. This class stores information about the
+ * resource, including its resourceId, and items offered.
  */
 public class Resource implements Serializable {
   public Resource(Map<String, Item> items, String resourceId) {
@@ -18,8 +17,8 @@ public class Resource implements Serializable {
   /**
    * Adds an Item to the repository.
    *
-   * @param itemId              The ID of the new item.
-   * @param item                The item object to add.
+   * @param itemId The ID of the new item.
+   * @param item The item object to add.
    */
   public void addItem(String itemId, Item item) {
     items.put(itemId, item);
@@ -37,7 +36,7 @@ public class Resource implements Serializable {
   /**
    * Remove an item and returns the item removed.
    *
-   * @param itemId             The ID of the removing item.
+   * @param itemId The ID of the removing item.
    * @return the removed item.
    */
   public Item removeItem(String itemId) {
@@ -47,7 +46,7 @@ public class Resource implements Serializable {
   /**
    * Retrieves an item from the repository by its ID.
    *
-   * @param itemId             The ID of the removing item.
+   * @param itemId The ID of the removing item.
    * @return the item with the given itemId.
    */
   public Item getItemById(String itemId) {
@@ -66,7 +65,7 @@ public class Resource implements Serializable {
       Item value = entry.getValue();
       if (value.getStatus() == "available") {
         result.append(resourceId).append(" ").append(key).append(": ").append(value.toString())
-                .append("\n");
+            .append("\n");
       }
     }
     return result.toString();
@@ -74,8 +73,7 @@ public class Resource implements Serializable {
 
 
   /**
-   * Returns a string representation of the resource, including its id and
-   * items inside.
+   * Returns a string representation of the resource, including its id and items inside.
    *
    * @return A string representing the resource.
    */
@@ -86,11 +84,25 @@ public class Resource implements Serializable {
       String key = entry.getKey();
       Item value = entry.getValue();
       result.append(resourceId).append(" ").append(key).append(": ").append(value.toString())
-              .append("\n");
+          .append("\n");
     }
     return result.toString();
   }
 
+  /**
+   * Returns whether the other object is equal to this one (deep comparison).
+   * 
+   * @return The other object.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof Resource))
+      return false;
+    Resource resource = (Resource) o;
+    return items.equals(resource.items) && resourceId.equals(resource.resourceId);
+  }
 
   @Serial
   private static final long serialVersionUID = 234567L;

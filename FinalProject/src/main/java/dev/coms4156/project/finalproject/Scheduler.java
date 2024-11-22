@@ -142,4 +142,20 @@ public class Scheduler {
   public void setResource(Resource resource) {
     resourceRepository = resource.getAllItems();
   }
+
+  /**
+   * Returns whether the other object is equal to this one (deep comparison).
+   * 
+   * @return The other object.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof Scheduler))
+      return false;
+    Scheduler scheduler = (Scheduler) o;
+    return requests.equals(scheduler.requests)
+        && resourceRepository.equals(scheduler.resourceRepository);
+  }
 }

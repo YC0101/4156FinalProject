@@ -6,28 +6,28 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 /**
- * Represents an item being managed by the Resource Management System (RMS).
- * This class handles individual item attributes such as type, quantity, expiration date, 
- * status, and donor information.
+ * Represents an item being managed by the Resource Management System (RMS). This class handles
+ * individual item attributes such as type, quantity, expiration date, status, and donor
+ * information.
  */
 public class Item implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 123456L;
-  private String itemId;       // Unique identifier for the item
-  private String itemType;     // Type of the item (e.g., "Food", "Clothing")
-  private int quantity;        // Quantity of the item
+  private String itemId; // Unique identifier for the item
+  private String itemType; // Type of the item (e.g., "Food", "Clothing")
+  private int quantity; // Quantity of the item
   private LocalDate expirationDate; // Expiration date, if applicable
-  private String status;       // Status of the item ("available", "dispatched", "unknown")
-  private String donorId;      // Identifier of the donor who provided the item
+  private String status; // Status of the item ("available", "dispatched", "unknown")
+  private String donorId; // Identifier of the donor who provided the item
 
   /**
    * Constructor to create a new Item object.
    *
-   * @param itemType       The type of the item.
-   * @param quantity       The quantity of the item.
+   * @param itemType The type of the item.
+   * @param quantity The quantity of the item.
    * @param expirationDate The expiration date of the item, if applicable.
-   * @param donorId        The ID of the donor who provided the item.
+   * @param donorId The ID of the donor who provided the item.
    */
   public Item(String itemType, int quantity, LocalDate expirationDate, String donorId) {
     this.itemId = generateUniqueItemId(); // Generate a unique ID for the item
@@ -53,9 +53,8 @@ public class Item implements Serializable {
   }
 
   /**
-   * Validates the item's attributes.
-   * Check whether the current attributes of the item 
-   * (such as quantity and expirationDate) are valid
+   * Validates the item's attributes. Check whether the current attributes of the item (such as
+   * quantity and expirationDate) are valid
    *
    * @return true if the attributes are valid, false otherwise.
    */
@@ -128,7 +127,24 @@ public class Item implements Serializable {
   @Override
   public String toString() {
     return "Item[ID=" + this.itemId + ", Type=" + this.itemType + ", Quantity=" + this.quantity
-        + ", Expiration=" + this.expirationDate + ", Status="
-        + this.status + ", DonorID=" + this.donorId + "]";
+        + ", Expiration=" + this.expirationDate + ", Status=" + this.status + ", DonorID="
+        + this.donorId + "]";
+  }
+
+  /**
+   * Returns whether the other object is equal to this one (deep comparison).
+   * 
+   * @return The other object.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof Item))
+      return false;
+    Item item = (Item) o;
+    return itemId.equals(item.itemId) && itemType.equals(item.itemType) && quantity == item.quantity
+        && expirationDate.equals(item.expirationDate) && status.equals(item.status)
+        && donorId.equals(item.donorId);
   }
 }
