@@ -65,16 +65,18 @@ public class Scheduler {
    * @return true if all requested resources are available, false otherwise.
    */
   public boolean checkResourceAvailability(Request request) {
-    for (String itemId : request.getItemIds()) {
+    for (int i = 0; i < request.getItemIds().size(); i++) {
+      String itemId = request.getItemIds().get(i);
+      Integer itemQuantity = request.getItemQuantities().get(i);
       // Check if the resource exists in the repository
       if (!resourceRepository.containsKey(itemId)) {
-        System.out.println("Item ID " + itemId + " does not exist in the repository.");
+        // System.out.println("Item ID " + itemId + " does not exist in the repository.");
         return false;
       }
 
       // Get the item and check if it has enough quantity
       Item item = resourceRepository.get(itemId);
-      if (item.getQuantity() <= 0) {
+      if (item.getQuantity() < itemQuantity) {
         // System.out.println("Item ID " + itemId + " has insufficient quantity.");
         return false;
       }
@@ -93,17 +95,20 @@ public class Scheduler {
     List<Item> usedItems = new ArrayList<>();
     // Check if all resources are available
     if (checkResourceAvailability(request)) {
-      for (String itemId : request.getItemIds()) {
+      for (int i = 0; i < request.getItemIds().size(); i++) {
+        String itemId = request.getItemIds().get(i);
+        Integer itemQuantity = request.getItemQuantities().get(i);
         // Get the item from the repository
         Item item = resourceRepository.get(itemId);
         // Decrement the item quantity when dispatching ** TO BE MODIFIED
-        item.setQuantity(item.getQuantity() - 1);
-        System.out.println("Dispatched 1 unit of item ID: " + item.getItemId());
+        item.setQuantity(item.getQuantity() - itemQuantity);
+        System.out
+            .println(" -- Dispatched " + itemQuantity + " unit of item ID: " + item.getItemId());
 
         // If the item quantity reaches zero, update the item status
         if (item.getQuantity() == 0) {
           item.setStatus("dispatched");
-          System.out.println("Item ID " + item.getItemId() + " is now fully dispatched.");
+          System.out.println(" -- Item ID " + item.getItemId() + " is now fully dispatched.");
         }
         usedItems.add(item);
       }

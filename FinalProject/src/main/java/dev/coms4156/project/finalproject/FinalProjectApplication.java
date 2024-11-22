@@ -110,18 +110,18 @@ public class FinalProjectApplication implements CommandLineRunner {
     resourceMapping.put("R_COLUMBIA", resource1);
 
     Request[] requests = new Request[5];
-    requests[0] = new Request("REQ1", Arrays.asList(foodItemArray[0].getItemId()), "Pending",
-        "High", "John Doe");
-    requests[1] = new Request("REQ2", Arrays.asList(drinkItemArray[1].getItemId()), "Pending",
-        "Low", "Alice Doe");
+    requests[0] = new Request("REQ1", Arrays.asList(foodItemArray[0].getItemId()), Arrays.asList(2),
+        "Pending", "High", "John Doe");
+    requests[1] = new Request("REQ2", Arrays.asList(drinkItemArray[1].getItemId()),
+        Arrays.asList(1), "Pending", "Low", "Alice Doe");
     requests[2] = new Request("REQ3",
         Arrays.asList(clothingItemArray[2].getItemId(), medicineItemArray[1].getItemId()),
-        "Pending", "Medium", "John Doe");
-    requests[3] = new Request("REQ4", Arrays.asList(clothingItemArray[2].getItemId()), "Pending",
-        "High", "Jane Doe");
+        Arrays.asList(5), "Pending", "Medium", "John Doe");
+    requests[3] = new Request("REQ4", Arrays.asList(clothingItemArray[2].getItemId()),
+        Arrays.asList(6), "Pending", "High", "Jane Doe");
     requests[4] = new Request("REQ5",
-        Arrays.asList(hygieneItemArray[3].getItemId(), clothingItemArray[2].getItemId()), "Pending",
-        "High", "Sara Doe");
+        Arrays.asList(hygieneItemArray[3].getItemId(), clothingItemArray[2].getItemId()),
+        Arrays.asList(7, 2), "Pending", "High", "Sara Doe");
   }
 
   /**

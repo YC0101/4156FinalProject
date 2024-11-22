@@ -14,6 +14,7 @@ public class Request implements Serializable {
   private static final long serialVersionUID = 345678L;
   private String requestId;
   private List<String> itemIds;
+  private List<Integer> itemQuantities;
   private String status;
   private String priorityLevel;
   private String requesterInfo;
@@ -23,14 +24,16 @@ public class Request implements Serializable {
    *
    * @param requestId The unique identifier for the request.
    * @param itemIds List of item IDs being requested.
+   * @param itemQuantities List of item quantities being requested.
    * @param status Current status of the request.
    * @param priorityLevel Priority level of the request.
    * @param requesterInfo Information about the requester.
    */
-  public Request(String requestId, List<String> itemIds, String status, String priorityLevel,
+  public Request(String requestId, List<String> itemIds, List<Integer> itemQuantities, String status, String priorityLevel,
       String requesterInfo) {
     this.requestId = requestId;
     this.itemIds = itemIds;
+    this.itemQuantities = itemQuantities;
     this.status = status;
     this.priorityLevel = priorityLevel;
     this.requesterInfo = requesterInfo;
@@ -52,6 +55,15 @@ public class Request implements Serializable {
    */
   public List<String> getItemIds() {
     return itemIds;
+  }
+
+  /**
+   * Returns the list of item quantities involved in the request.
+   *
+   * @return list of item IDs.
+   */
+  public List<Integer> getItemQuantities() {
+    return itemQuantities;
   }
 
   /**

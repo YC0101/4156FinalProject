@@ -27,13 +27,14 @@ public class RequestUnitTests {
   private Request request;
   private String requestId = "REQ123";
   private List<String> itemIds = Arrays.asList("ITEM001", "ITEM002", "ITEM003");
-  private String status = "requested";
+  private List<Integer> itemQuantities = Arrays.asList(3, 2, 5);
+  private String status = "Pending";
   private String priorityLevel = "High";
   private String requesterInfo = "John Doe";
 
   @BeforeEach
   public void setUp() {
-    request = new Request(requestId, itemIds, status, priorityLevel, requesterInfo);
+    request = new Request(requestId, itemIds, itemQuantities, status, priorityLevel, requesterInfo);
   }
 
   @Test
@@ -53,9 +54,9 @@ public class RequestUnitTests {
 
   @Test
   public void testSetStatus() {
-    String newStatus = "fulfilled";
+    String newStatus = "Dispatched";
     request.setStatus(newStatus);
-    assertEquals(newStatus, request.getStatus(), "Status should be updated to 'fulfilled'.");
+    assertEquals(newStatus, request.getStatus(), "Status should be updated to 'Dispatched'.");
   }
 
   @Test

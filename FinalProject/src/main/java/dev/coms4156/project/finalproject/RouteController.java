@@ -98,12 +98,13 @@ public class RouteController {
   @PostMapping(value = "/createRequest", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> createRequest(@RequestParam(value = "requestId") String requestId,
       @RequestParam(value = "itemIds") List<String> itemIds,
+      @RequestParam(value = "itemQuantities") List<Integer> itemQuantities,
       @RequestParam(value = "status") String status,
       @RequestParam(value = "priorityLevel") String priorityLevel,
       @RequestParam(value = "requesterInfo") String requesterInfo,
       @RequestParam(value = "resourceId") String resourceId) {
     try {
-      Request newRequest = new Request(requestId, itemIds, status, priorityLevel, requesterInfo);
+      Request newRequest = new Request(requestId, itemIds, itemQuantities, status, priorityLevel, requesterInfo);
       database.addRequest(newRequest, resourceId.toUpperCase(Locale.ENGLISH));
       return new ResponseEntity<>(newRequest, HttpStatus.OK);
     } catch (Exception e) {
