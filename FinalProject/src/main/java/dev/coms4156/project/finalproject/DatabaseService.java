@@ -97,7 +97,7 @@ public class DatabaseService {
 
   public void updateItemStatus(String resourceId, String itemId, String status) {
     String sql = "UPDATE resource SET status = ? WHERE resourceId = ? AND itemId = ?";
-    System.out.println(jdbcTemplate.update(sql, status, resourceId, itemId));
+    jdbcTemplate.update(sql, status, resourceId, itemId);
   }
 
   public void updateRequestStatus(String resourceId, String requestId, String status) {

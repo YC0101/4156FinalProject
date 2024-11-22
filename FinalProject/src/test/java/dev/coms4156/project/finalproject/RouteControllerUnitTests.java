@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class contains tests for the Resource class.
@@ -42,8 +44,9 @@ public class RouteControllerUnitTests {
     Item item = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
     ResponseEntity<?> response = testRouteController.createDonation(resourceId, "Food", 10,
         LocalDate.now().plusDays(7), "Robert");
+    item.setItemId(((Item) response.getBody()).getItemId());
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(item.toString().substring(45), ((String) response.getBody()).substring(45));
+    assertEquals(item, response.getBody());
 
     response = testRouteController.createDonation(resourceId, "Food", -1,
         LocalDate.now().plusDays(7), "Robert");
@@ -57,7 +60,7 @@ public class RouteControllerUnitTests {
     ResponseEntity<?> response = testRouteController.createRequest("REQ1",
         Arrays.asList("ABCD", "EFGH"), "Pending", "High", "John Doe", resourceId);
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(request.toString(), response.getBody());
+    assertEquals(request, response.getBody());
   }
 
   @Test
@@ -71,7 +74,7 @@ public class RouteControllerUnitTests {
 
     ResponseEntity<?> response = testRouteController.retrieveResource(resourceId);
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(resource1.toString(), response.getBody());
+    assertEquals(resource1, response.getBody());
   }
 
   @Test
@@ -83,7 +86,7 @@ public class RouteControllerUnitTests {
 
     ResponseEntity<?> response = testRouteController.retrieveItem(resourceId, item1.getItemId());
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(resourceId + ": " + item1.toString(), response.getBody());
+    assertEquals(item1, response.getBody());
 
     response = testRouteController.retrieveItem(resourceId, "ABCD");
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -93,13 +96,15 @@ public class RouteControllerUnitTests {
   public void testRetrieveAvailableItems() {
     Item item1 = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
     Item item2 = new Item("Clothing", 5, LocalDate.now().plusDays(180), "Charlie");
+    List<Item> items = new ArrayList<>();
     item2.markAsDispatched();
     database.addItem(item1, resourceId);
     database.addItem(item2, resourceId);
 
     ResponseEntity<?> response = testRouteController.retrieveAvailableItems(resourceId);
+    items.add(item1);
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(resourceId + ": " + item1.toString() + "\n", response.getBody());
+    assertEquals(items, response.getBody());
 
     item1.markAsDispatched();
     database.updateItemStatus(resourceId, item1.getItemId(), "dispatched");
@@ -111,6 +116,7 @@ public class RouteControllerUnitTests {
   public void testRetrieveDispatchedItems() {
     Item item1 = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
     Item item2 = new Item("Clothing", 5, LocalDate.now().plusDays(180), "Charlie");
+    List<Item> items = new ArrayList<>();
     database.addItem(item1, resourceId);
     database.addItem(item2, resourceId);
 
@@ -120,20 +126,23 @@ public class RouteControllerUnitTests {
     item1.markAsDispatched();
     database.updateItemStatus(resourceId, item1.getItemId(), "dispatched");
     response = testRouteController.retrieveDispatchedItems(resourceId);
+    items.add(item1);
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(resourceId + ": " + item1.toString() + "\n", response.getBody());
+    assertEquals(items, response.getBody());
   }
 
   @Test
   public void testRetrieveItemsByDonor() {
     Item item1 = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
     Item item2 = new Item("Clothing", 5, LocalDate.now().plusDays(180), "Charlie");
+    List<Item> items = new ArrayList<>();
     database.addItem(item1, resourceId);
     database.addItem(item2, resourceId);
 
     ResponseEntity<?> response = testRouteController.retrieveItemsByDonor(resourceId, "Robert");
+    items.add(item1);
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(resourceId + ": " + item1.toString() + "\n", response.getBody());
+    assertEquals(items, response.getBody());
 
     response = testRouteController.retrieveItemsByDonor(resourceId, "Somebody");
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());

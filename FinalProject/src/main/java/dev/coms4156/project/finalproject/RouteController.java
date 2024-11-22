@@ -1,6 +1,8 @@
 package dev.coms4156.project.finalproject;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -70,7 +72,7 @@ public class RouteController {
         return new ResponseEntity<>("Invalid Input Item", HttpStatus.BAD_REQUEST);
       } else {
         database.addItem(newItem, resourceId.toUpperCase(Locale.ENGLISH));
-        return new ResponseEntity<>(newItem.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(newItem, HttpStatus.OK);
       }
     } catch (Exception e) {
       return handleException(e);
@@ -103,7 +105,7 @@ public class RouteController {
     try {
       Request newRequest = new Request(requestId, itemIds, status, priorityLevel, requesterInfo);
       database.addRequest(newRequest, resourceId.toUpperCase(Locale.ENGLISH));
-      return new ResponseEntity<>(newRequest.toString(), HttpStatus.OK);
+      return new ResponseEntity<>(newRequest, HttpStatus.OK);
     } catch (Exception e) {
       return handleException(e);
     }
@@ -132,12 +134,13 @@ public class RouteController {
         database.updateItemStatus(resourceId, item.getItemId(), item.getStatus());
       }
 
-      StringBuilder result = new StringBuilder();
+      Map<String, List<Request>> result = new HashMap<>();
+      result.put("Dispatched", new ArrayList<>());
       for (Request request : processResult.getLeft()) {
         database.updateRequestStatus(resourceId, request.getRequestId(), request.getStatus());
-        result.append("Dispatched: ").append(request).append("\n");
+        result.get("Dispatched").add(request);
       }
-      return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+      return new ResponseEntity<>(result, HttpStatus.OK);
     } catch (Exception e) {
       return handleException(e);
     }
@@ -160,11 +163,7 @@ public class RouteController {
       if (requests.isEmpty()) {
         return new ResponseEntity<>("Requests By Resource Not Found", HttpStatus.NOT_FOUND);
       } else {
-        StringBuilder result = new StringBuilder();
-        for (Request request : requests) {
-          result.append(request.toString()).append("\n");
-        }
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(requests, HttpStatus.OK);
       }
     } catch (Exception e) {
       return handleException(e);
@@ -194,7 +193,7 @@ public class RouteController {
           return new ResponseEntity<>("Request Not Found", HttpStatus.NOT_FOUND);
         }
       } else {
-        return new ResponseEntity<>(requests.get(0).toString(), HttpStatus.OK);
+        return new ResponseEntity<>(requests.get(0), HttpStatus.OK);
       }
     } catch (Exception e) {
       return handleException(e);
@@ -216,7 +215,7 @@ public class RouteController {
       if (resource.getAllItems().isEmpty()) {
         return new ResponseEntity<>("Resource Not Found", HttpStatus.NOT_FOUND);
       } else {
-        return new ResponseEntity<>(resource.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(resource, HttpStatus.OK);
       }
     } catch (Exception e) {
       return handleException(e);
@@ -249,7 +248,7 @@ public class RouteController {
           return new ResponseEntity<>("Item Not Found", HttpStatus.NOT_FOUND);
         }
       } else {
-        return new ResponseEntity<>(resourceId + ": " + itemsMapping.get(itemId).toString(), HttpStatus.OK);
+        return new ResponseEntity<>(itemsMapping.get(itemId), HttpStatus.OK);
       }
     } catch (Exception e) {
       return handleException(e);
@@ -275,18 +274,18 @@ public class RouteController {
         return new ResponseEntity<>("Resource Not Found", HttpStatus.NOT_FOUND);
       }
 
-      StringBuilder result = new StringBuilder();
+      List<Item> result = new ArrayList<>();
       for (Map.Entry<String, Item> entry : itemsMapping.entrySet()) {
         Item item = entry.getValue();
         if ("available".equals(item.getStatus())) {
-          result.append(resourceId).append(": ").append(item.toString()).append("\n");
+          result.add(item);
         }
       }
 
-      if (result.length() == 0) {
+      if (result.isEmpty()) {
         return new ResponseEntity<>("No Available Items Found", HttpStatus.NOT_FOUND);
       } else {
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
       }
     } catch (Exception e) {
       return handleException(e);
@@ -312,18 +311,18 @@ public class RouteController {
         return new ResponseEntity<>("Resource Not Found", HttpStatus.NOT_FOUND);
       }
 
-      StringBuilder result = new StringBuilder();
+      List<Item> result = new ArrayList<>();
       for (Map.Entry<String, Item> entry : itemsMapping.entrySet()) {
         Item item = entry.getValue();
         if ("dispatched".equals(item.getStatus())) {
-          result.append(resourceId).append(": ").append(item.toString()).append("\n");
+          result.add(item);
         }
       }
 
-      if (result.length() == 0) {
+      if (result.isEmpty()) {
         return new ResponseEntity<>("No Dispatched Items Found", HttpStatus.NOT_FOUND);
       } else {
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
       }
     } catch (Exception e) {
       return handleException(e);
@@ -352,18 +351,18 @@ public class RouteController {
         return new ResponseEntity<>("Resource Not Found", HttpStatus.NOT_FOUND);
       }
 
-      StringBuilder result = new StringBuilder();
+      List<Item> result = new ArrayList<>();
       for (Map.Entry<String, Item> entry : itemsMapping.entrySet()) {
         Item item = entry.getValue();
         if (donorId.equals(item.getDonorId())) {
-          result.append(resourceId).append(": ").append(item.toString()).append("\n");
+          result.add(item);
         }
       }
 
-      if (result.length() == 0) {
+      if (result.isEmpty()) {
         return new ResponseEntity<>("No Items Found", HttpStatus.NOT_FOUND);
       } else {
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
       }
     } catch (Exception e) {
       return handleException(e);
