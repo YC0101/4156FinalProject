@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RouteController {
 
-  @Autowired
   private DatabaseService database;
+
+  public RouteController(DatabaseService database) {
+    this.database = database;
+}
 
   /**
    * Redirects to the homepage.
@@ -126,13 +128,13 @@ public class RouteController {
       Pair<List<Request>, Set<Item>> processResult = scheduler.processRequests();
 
       for (Item item : processResult.getRight()) {
-        database.updateItemQuantity(item.getItemId(), item.getQuantity());
-        database.updateItemStatus(item.getItemId(), item.getStatus());
+        database.updateItemQuantity(resourceId, item.getItemId(), item.getQuantity());
+        database.updateItemStatus(resourceId, item.getItemId(), item.getStatus());
       }
 
       StringBuilder result = new StringBuilder();
       for (Request request : processResult.getLeft()) {
-        database.updateRequestStatus(request.getRequestId(), request.getStatus());
+        database.updateRequestStatus(resourceId, request.getRequestId(), request.getStatus());
         result.append("Dispatched: ").append(request).append("\n");
       }
       return new ResponseEntity<>(result.toString(), HttpStatus.OK);

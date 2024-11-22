@@ -20,6 +20,7 @@ public class DatabaseService {
       Item item = new Item((String) row.get("itemType"), (int) row.get("quantity"),
           ((Date) row.get("expirationDate")).toLocalDate(), (String) row.get("donorId"));
       item.setItemId((String) row.get("itemId"));
+      item.setStatus((String) row.get("status"));
       itemsMapping.put((String) row.get("itemId"), item);
     }
     return itemsMapping;
@@ -89,19 +90,19 @@ public class DatabaseService {
     }
   }
 
-  public void updateItemQuantity(String itemId, int quantity) {
-    String sql = "UPDATE resource SET quantity = ? WHERE itemId = ?";
-    jdbcTemplate.update(sql, quantity, itemId);
+  public void updateItemQuantity(String resourceId, String itemId, int quantity) {
+    String sql = "UPDATE resource SET quantity = ? WHERE resourceId = ? AND itemId = ?";
+    jdbcTemplate.update(sql, quantity, resourceId, itemId);
   }
 
-  public void updateItemStatus(String itemId, String status) {
-    String sql = "UPDATE resource SET status = ? WHERE itemId = ?";
-    jdbcTemplate.update(sql, status, itemId);
+  public void updateItemStatus(String resourceId, String itemId, String status) {
+    String sql = "UPDATE resource SET status = ? WHERE resourceId = ? AND itemId = ?";
+    System.out.println(jdbcTemplate.update(sql, status, resourceId, itemId));
   }
 
-  public void updateRequestStatus(String requestId, String status) {
-    String sql = "UPDATE request SET status = ? WHERE requestId = ?";
-    jdbcTemplate.update(sql, status, requestId);
+  public void updateRequestStatus(String resourceId, String requestId, String status) {
+    String sql = "UPDATE request SET status = ? WHERE resourceId = ? AND requestId = ?";
+    jdbcTemplate.update(sql, status, resourceId, requestId);
   }
 
   public void delRequestsByResourceId(String resourceId) {
