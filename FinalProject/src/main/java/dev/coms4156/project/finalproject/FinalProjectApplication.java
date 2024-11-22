@@ -1,10 +1,13 @@
 package dev.coms4156.project.finalproject;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +21,11 @@ public class FinalProjectApplication implements CommandLineRunner {
 
   public static void main(String[] args) {
     SpringApplication.run(FinalProjectApplication.class, args);
+  }
+
+  public FinalProjectApplication(DatabaseService database) {
+    this.database = database;
+    defaultResourceId = "R_COLUMBIA";
   }
 
   /**
@@ -35,7 +43,9 @@ public class FinalProjectApplication implements CommandLineRunner {
         while (true) {
           String input = scanner.nextLine().trim().toUpperCase();
           if ("Y".equals(input)) {
-            resetDataFile();
+            System.out.println(" -- Reseting Database");
+            resetData();
+            System.out.println("System Setup");
             break;
           } else if ("N".equals(input)) {
             System.out.println("Factory reset has been cancelled.");
@@ -45,7 +55,6 @@ public class FinalProjectApplication implements CommandLineRunner {
           }
         }
       }
-      System.out.println("System Setup");
       return;
     }
     System.out.println("Start up");
@@ -54,7 +63,10 @@ public class FinalProjectApplication implements CommandLineRunner {
   /**
    * Prepare initial data for the database or allows for data to be reset in event of errors.
    */
-  public void resetDataFile() {
+  public Pair<List<Request>, Resource> resetData() {
+    database.delRequestsByResourceId(defaultResourceId);
+    database.delResource(defaultResourceId);
+
     Item[] foodItemArray = new Item[5];
     foodItemArray[0] = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
     foodItemArray[1] = new Item("Food", 5, LocalDate.now().plusDays(7), "Fiona");
@@ -105,23 +117,39 @@ public class FinalProjectApplication implements CommandLineRunner {
     for (Item drinkItem : drinkItemArray) {
       items.put(drinkItem.getItemId(), drinkItem);
     }
-    Resource resource1 = new Resource(items, "R_COLUMBIA");
-    Map<String, Resource> resourceMapping = new HashMap<>();
-    resourceMapping.put("R_COLUMBIA", resource1);
 
-    Request[] requests = new Request[5];
-    requests[0] = new Request("REQ1", Arrays.asList(foodItemArray[0].getItemId()), Arrays.asList(2),
-        "Pending", "High", "John Doe");
-    requests[1] = new Request("REQ2", Arrays.asList(drinkItemArray[1].getItemId()),
+    for (Map.Entry<String, Item> entry : items.entrySet()) {
+      database.addItem(entry.getValue(), defaultResourceId);
+    }
+    Resource resource = new Resource(items, defaultResourceId);
+
+    Request[] requestArray = new Request[5];
+    requestArray[0] = new Request("REQ1", Arrays.asList(foodItemArray[0].getItemId()),
+        Arrays.asList(2), "Pending", "High", "John Doe");
+    requestArray[1] = new Request("REQ2", Arrays.asList(drinkItemArray[1].getItemId()),
         Arrays.asList(1), "Pending", "Low", "Alice Doe");
-    requests[2] = new Request("REQ3",
-        Arrays.asList(clothingItemArray[2].getItemId(), medicineItemArray[1].getItemId()),
+    requestArray[2] = new Request("REQ3", Arrays.asList(medicineItemArray[1].getItemId()),
         Arrays.asList(5), "Pending", "Medium", "John Doe");
-    requests[3] = new Request("REQ4", Arrays.asList(clothingItemArray[2].getItemId()),
+    requestArray[3] = new Request("REQ4", Arrays.asList(clothingItemArray[2].getItemId()),
         Arrays.asList(6), "Pending", "High", "Jane Doe");
-    requests[4] = new Request("REQ5",
+    requestArray[4] = new Request("REQ5",
         Arrays.asList(hygieneItemArray[3].getItemId(), clothingItemArray[2].getItemId()),
         Arrays.asList(7, 2), "Pending", "High", "Sara Doe");
+
+    for (Request request : requestArray) {
+      database.addRequest(request, defaultResourceId);
+    }
+    List<Request> requests = new ArrayList<>(Arrays.asList(requestArray));
+    return Pair.of(requests, resource);
+  }
+
+  /**
+   * Overrides the default resource, used when testing.
+   *
+   * @param testDatabase A {@code String} test resource ID.
+   */
+  public void overriedDefaultResourceId(String resourceId) {
+    this.defaultResourceId = resourceId;
   }
 
   /**
@@ -132,4 +160,7 @@ public class FinalProjectApplication implements CommandLineRunner {
   public void onTermination() {
     System.out.println("Termination");
   }
+
+  private DatabaseService database;
+  private String defaultResourceId;
 }

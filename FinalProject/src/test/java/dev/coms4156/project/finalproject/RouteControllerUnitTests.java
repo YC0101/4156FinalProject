@@ -211,8 +211,8 @@ public class RouteControllerUnitTests {
   }
 
   /** The test resource instance used for testing. */
-  public static String resourceId = "R_TEST_AUTO";
   public RouteController testRouteController;
   @Autowired
   public DatabaseService database;
+  public static String resourceId = "R_TEST_AUTO";
 }

@@ -119,7 +119,7 @@ public class DatabaseService {
     jdbcTemplate.update(sql, resourceId);
   }
 
-  public void delResourceByResourceId(String resourceId) {
+  public void delResource(String resourceId) {
     String sql = "DELETE FROM resource WHERE resourceId = ?";
     jdbcTemplate.update(sql, resourceId);
   }

@@ -28,7 +28,7 @@ public class RouteController {
 
   public RouteController(DatabaseService database) {
     this.database = database;
-}
+  }
 
   /**
    * Redirects to the homepage.
@@ -104,7 +104,8 @@ public class RouteController {
       @RequestParam(value = "requesterInfo") String requesterInfo,
       @RequestParam(value = "resourceId") String resourceId) {
     try {
-      Request newRequest = new Request(requestId, itemIds, itemQuantities, status, priorityLevel, requesterInfo);
+      Request newRequest =
+          new Request(requestId, itemIds, itemQuantities, status, priorityLevel, requesterInfo);
       database.addRequest(newRequest, resourceId.toUpperCase(Locale.ENGLISH));
       return new ResponseEntity<>(newRequest, HttpStatus.OK);
     } catch (Exception e) {
@@ -380,7 +381,7 @@ public class RouteController {
       @RequestParam(value = "resourceId", defaultValue = "R_TEST") String resourceId) {
     try {
       database.delRequestsByResourceId(resourceId.toUpperCase(Locale.ENGLISH));
-      database.delResourceByResourceId(resourceId.toUpperCase(Locale.ENGLISH));
+      database.delResource(resourceId.toUpperCase(Locale.ENGLISH));
       return new ResponseEntity<>("Reset " + resourceId + " successfully", HttpStatus.OK);
     } catch (Exception e) {
       return handleException(e);
