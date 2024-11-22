@@ -162,7 +162,7 @@ public class RouteController {
       List<Request> requests =
           database.fetchRequestsByResource(resourceId.toUpperCase(Locale.ENGLISH));
       if (requests.isEmpty()) {
-        return new ResponseEntity<>("Requests By Resource Not Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Requests By Resource Not Found", HttpStatus.OK);
       } else {
         return new ResponseEntity<>(requests, HttpStatus.OK);
       }
@@ -189,9 +189,9 @@ public class RouteController {
       if (requests.isEmpty()) {
         requests = database.fetchRequestsByResource(resourceId.toUpperCase(Locale.ENGLISH), 1);
         if (requests.isEmpty()) {
-          return new ResponseEntity<>("Requests By Resource Not Found", HttpStatus.NOT_FOUND);
+          return new ResponseEntity<>("Requests By Resource Not Found", HttpStatus.OK);
         } else {
-          return new ResponseEntity<>("Request Not Found", HttpStatus.NOT_FOUND);
+          return new ResponseEntity<>("Request Not Found", HttpStatus.OK);
         }
       } else {
         return new ResponseEntity<>(requests.get(0), HttpStatus.OK);
@@ -214,7 +214,7 @@ public class RouteController {
     try {
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
       if (resource.getAllItems().isEmpty()) {
-        return new ResponseEntity<>("Resource Not Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
       } else {
         return new ResponseEntity<>(resource, HttpStatus.OK);
       }
@@ -244,9 +244,9 @@ public class RouteController {
         resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH), 1);
         itemsMapping = resource.getAllItems();
         if (itemsMapping.isEmpty()) {
-          return new ResponseEntity<>("Resource Not Found", HttpStatus.NOT_FOUND);
+          return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
         } else {
-          return new ResponseEntity<>("Item Not Found", HttpStatus.NOT_FOUND);
+          return new ResponseEntity<>("Item Not Found", HttpStatus.OK);
         }
       } else {
         return new ResponseEntity<>(itemsMapping.get(itemId), HttpStatus.OK);
@@ -272,7 +272,7 @@ public class RouteController {
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
       if (itemsMapping.isEmpty()) {
-        return new ResponseEntity<>("Resource Not Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
       }
 
       List<Item> result = new ArrayList<>();
@@ -284,7 +284,7 @@ public class RouteController {
       }
 
       if (result.isEmpty()) {
-        return new ResponseEntity<>("No Available Items Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("No Available Items Found", HttpStatus.OK);
       } else {
         return new ResponseEntity<>(result, HttpStatus.OK);
       }
@@ -309,7 +309,7 @@ public class RouteController {
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
       if (itemsMapping.isEmpty()) {
-        return new ResponseEntity<>("Resource Not Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
       }
 
       List<Item> result = new ArrayList<>();
@@ -321,7 +321,7 @@ public class RouteController {
       }
 
       if (result.isEmpty()) {
-        return new ResponseEntity<>("No Dispatched Items Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("No Dispatched Items Found", HttpStatus.OK);
       } else {
         return new ResponseEntity<>(result, HttpStatus.OK);
       }
@@ -349,7 +349,7 @@ public class RouteController {
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
       if (itemsMapping.isEmpty()) {
-        return new ResponseEntity<>("Resource Not Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
       }
 
       List<Item> result = new ArrayList<>();
@@ -361,7 +361,7 @@ public class RouteController {
       }
 
       if (result.isEmpty()) {
-        return new ResponseEntity<>("No Items Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("No Items Found", HttpStatus.OK);
       } else {
         return new ResponseEntity<>(result, HttpStatus.OK);
       }

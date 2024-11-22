@@ -77,6 +77,10 @@ public class RouteControllerUnitTests {
     requests.add(request2);
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(requests, response.getBody());
+
+    response = testRouteController.retrieveRequestsByResource("R_NEW");
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Requests By Resource Not Found", response.getBody());
   }
 
   @Test
@@ -91,6 +95,14 @@ public class RouteControllerUnitTests {
     ResponseEntity<?> response = testRouteController.retrieveRequest(resourceId, "REQ2");
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(request2, response.getBody());
+    
+    response = testRouteController.retrieveRequest(resourceId, "REQ3");
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Request Not Found", response.getBody());
+
+    response = testRouteController.retrieveRequest("R_NEW", "REQ3");
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Requests By Resource Not Found", response.getBody());
   }
 
   @Test
@@ -119,7 +131,12 @@ public class RouteControllerUnitTests {
     assertEquals(item1, response.getBody());
 
     response = testRouteController.retrieveItem(resourceId, "ABCD");
-    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Item Not Found", response.getBody());
+
+    response = testRouteController.retrieveItem("R_NEW", "ABCD");
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Resource Not Found", response.getBody());
   }
 
   @Test
@@ -139,7 +156,12 @@ public class RouteControllerUnitTests {
     item1.markAsDispatched();
     database.updateItemStatus(resourceId, item1.getItemId(), "dispatched");
     response = testRouteController.retrieveAvailableItems(resourceId);
-    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("No Available Items Found", response.getBody());
+
+    response = testRouteController.retrieveAvailableItems("R_NEW");
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Resource Not Found", response.getBody());
   }
 
   @Test
@@ -151,7 +173,8 @@ public class RouteControllerUnitTests {
     database.addItem(item2, resourceId);
 
     ResponseEntity<?> response = testRouteController.retrieveDispatchedItems(resourceId);
-    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("No Dispatched Items Found", response.getBody());
 
     item1.markAsDispatched();
     database.updateItemStatus(resourceId, item1.getItemId(), "dispatched");
@@ -159,6 +182,10 @@ public class RouteControllerUnitTests {
     items.add(item1);
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(items, response.getBody());
+
+    response = testRouteController.retrieveAvailableItems("R_NEW");
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Resource Not Found", response.getBody());
   }
 
   @Test
@@ -175,7 +202,12 @@ public class RouteControllerUnitTests {
     assertEquals(items, response.getBody());
 
     response = testRouteController.retrieveItemsByDonor(resourceId, "Somebody");
-    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("No Items Found", response.getBody());
+
+    response = testRouteController.retrieveAvailableItems("R_NEW");
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Resource Not Found", response.getBody());
   }
 
   /** The test resource instance used for testing. */
