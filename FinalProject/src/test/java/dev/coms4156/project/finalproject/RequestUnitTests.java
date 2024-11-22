@@ -53,15 +53,46 @@ public class RequestUnitTests {
   @Test
   public void testUpdatePriority() {
     String newPriority = "Low";
-    request.updatePriority(newPriority);
+    request.setPriority(newPriority);
     assertEquals(newPriority, request.getPriorityLevel(), "Priority should be updated to 'Low'.");
+  }
+
+  @Test
+  public void testValidateAttributes() {
+    assertEquals(true, request.validateAttributes());
+    Request invalidRequest = new Request(requestId, itemIds, Arrays.asList(0, -1, 1), status,
+        priorityLevel, requesterInfo);
+    assertEquals(false, invalidRequest.validateAttributes());
+    invalidRequest =
+        new Request(requestId, itemIds, Arrays.asList(9, 10), status, priorityLevel, requesterInfo);
+    assertEquals(false, invalidRequest.validateAttributes());
+    invalidRequest = new Request(requestId, itemIds, itemQuantities, status, "NEW", requesterInfo);
+    assertEquals(false, invalidRequest.validateAttributes());
+    invalidRequest =
+        new Request(requestId, itemIds, itemQuantities, "NEW", priorityLevel, requesterInfo);
+    assertEquals(false, invalidRequest.validateAttributes());
   }
 
   @Test
   public void testEquals() {
     assertEquals(true, request.equals(request));
     assertEquals(false, request.equals(1));
-    Request newRequest = new Request("REQ_NEW", itemIds, itemQuantities, status, priorityLevel, requesterInfo);
+    Request newRequest =
+        new Request("REQ_NEW", itemIds, itemQuantities, status, priorityLevel, requesterInfo);
+    assertEquals(false, request.equals(newRequest));
+    newRequest =
+        new Request(requestId, itemIds, itemQuantities, "Dispatched", priorityLevel, requesterInfo);
+    assertEquals(false, request.equals(newRequest));
+    newRequest = new Request(requestId, itemIds, itemQuantities, status, "Low", requesterInfo);
+    assertEquals(false, request.equals(newRequest));
+    newRequest = new Request(requestId, Arrays.asList("ITEM004"), itemQuantities, status,
+        priorityLevel, requesterInfo);
+    assertEquals(false, request.equals(newRequest));
+    newRequest = new Request(requestId, itemIds, Arrays.asList(2, 3, 5), status, priorityLevel,
+        requesterInfo);
+    assertEquals(false, request.equals(newRequest));
+    newRequest = new Request(requestId, itemIds, itemQuantities, status, priorityLevel,
+        "Bob Doe");
     assertEquals(false, request.equals(newRequest));
   }
 }

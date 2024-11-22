@@ -60,14 +60,44 @@ public class RouteControllerUnitTests {
             Arrays.asList(1, 2), "Pending", "High", "John Doe", resourceId);
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(request, response.getBody());
+
+    response = testRouteController.createRequest("REQ1", Arrays.asList("ABCD", "EFGH"),
+        Arrays.asList(3), "Pending", "High", "John Doe", resourceId);
+    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+  }
+
+  @Test
+  public void testProcessRequests() {
+    Item item1 = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
+    Item item2 = new Item("Cloth", 3, LocalDate.now().plusDays(120), "Robert");
+    database.addItem(item1, resourceId);
+    database.addItem(item2, resourceId);
+    Request request1 = new Request("REQ1", Arrays.asList(item1.getItemId(), item2.getItemId()), Arrays.asList(4, 2),
+        "Pending", "High", "John Doe");
+    Request request2 = new Request("REQ2", Arrays.asList(item1.getItemId()), Arrays.asList(5),
+        "Pending", "High", "John Doe");
+    Request request3 = new Request("REQ3", Arrays.asList(item1.getItemId()), Arrays.asList(2),
+        "Pending", "High", "John Doe");
+    List<Request> requests = new ArrayList<>();
+    database.addRequest(request1, resourceId);
+    database.addRequest(request2, resourceId);
+    database.addRequest(request3, resourceId);
+
+    ResponseEntity<?> response = testRouteController.processRequests(resourceId);
+    request1.setStatus("Dispatched");
+    request2.setStatus("Dispatched");
+    requests.add(request1);
+    requests.add(request2);
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(requests, ((Map<?, ?>) response.getBody()).get("Dispatched"));
   }
 
   @Test
   public void testRetrieveRequestsByResource() {
     Request request1 = new Request("REQ1", Arrays.asList("ABCD", "EFGH"), Arrays.asList(1, 2),
         "Pending", "High", "John Doe");
-    Request request2 = new Request("REQ2", Arrays.asList("ABCD"), Arrays.asList(6, 8), "Pending",
-        "Medium", "Amy Doe");
+    Request request2 = new Request("REQ2", Arrays.asList("ABCD", "WXYZ"), Arrays.asList(6, 8),
+        "Pending", "Medium", "Amy Doe");
     List<Request> requests = new ArrayList<>();
     database.addRequest(request1, resourceId);
     database.addRequest(request2, resourceId);
@@ -87,15 +117,15 @@ public class RouteControllerUnitTests {
   public void testRetrieveRequest() {
     Request request1 = new Request("REQ1", Arrays.asList("ABCD", "EFGH"), Arrays.asList(1, 2),
         "Pending", "High", "John Doe");
-    Request request2 = new Request("REQ2", Arrays.asList("ABCD"), Arrays.asList(6, 8), "Pending",
-        "Medium", "Amy Doe");
+    Request request2 = new Request("REQ2", Arrays.asList("ABCD", "WXYZ"), Arrays.asList(6, 8),
+        "Pending", "Medium", "Amy Doe");
     database.addRequest(request1, resourceId);
     database.addRequest(request2, resourceId);
 
     ResponseEntity<?> response = testRouteController.retrieveRequest(resourceId, "REQ2");
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(request2, response.getBody());
-    
+
     response = testRouteController.retrieveRequest(resourceId, "REQ3");
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals("Request Not Found", response.getBody());
