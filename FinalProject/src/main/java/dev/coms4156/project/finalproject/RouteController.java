@@ -106,8 +106,13 @@ public class RouteController {
     try {
       Request newRequest =
           new Request(requestId, itemIds, itemQuantities, status, priorityLevel, requesterInfo);
-      database.addRequest(newRequest, resourceId.toUpperCase(Locale.ENGLISH));
-      return new ResponseEntity<>(newRequest, HttpStatus.OK);
+
+      if(!newRequest.validateAttributes()) {
+        return new ResponseEntity<>("Invalid Input Request", HttpStatus.BAD_REQUEST);
+      } else {
+        database.addRequest(newRequest, resourceId.toUpperCase(Locale.ENGLISH));
+        return new ResponseEntity<>(newRequest, HttpStatus.OK);
+      }
     } catch (Exception e) {
       return handleException(e);
     }

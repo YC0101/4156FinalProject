@@ -29,14 +29,37 @@ public class Request implements Serializable {
    * @param priorityLevel Priority level of the request.
    * @param requesterInfo Information about the requester.
    */
-  public Request(String requestId, List<String> itemIds, List<Integer> itemQuantities, String status, String priorityLevel,
-      String requesterInfo) {
+  public Request(String requestId, List<String> itemIds, List<Integer> itemQuantities,
+      String status, String priorityLevel, String requesterInfo) {
     this.requestId = requestId;
     this.itemIds = itemIds;
     this.itemQuantities = itemQuantities;
     this.status = status;
     this.priorityLevel = priorityLevel;
     this.requesterInfo = requesterInfo;
+  }
+
+  /**
+   * Validates the request's attributes.
+   *
+   * @return true if the attributes are valid, false otherwise.
+   */
+  public boolean validateAttributes() {
+    if (itemIds.size() != itemQuantities.size() || itemIds.isEmpty()) {
+      return false;
+    }
+    for (Integer quantity : itemQuantities) {
+      if (quantity <= 0)
+        return false;
+    }
+    if (!("Dispatched".equals(status) || "Pending".equals(status))) {
+      return false;
+    }
+    if (!("Low".equals(priorityLevel) || "Medium".equals(priorityLevel)
+        || "High".equals(priorityLevel))) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -94,7 +117,7 @@ public class Request implements Serializable {
   }
 
   /**
-   * Updates the status of the request.
+   * Sets the status of the request.
    *
    * @param status New status to set for the request.
    */
@@ -103,11 +126,11 @@ public class Request implements Serializable {
   }
 
   /**
-   * Updates the priority level of the request.
+   * Sets the priority level of the request.
    *
    * @param newPriority New priority level to set for the request.
    */
-  public void updatePriority(String newPriority) {
+  public void setPriority(String newPriority) {
     this.priorityLevel = newPriority;
   }
 
@@ -118,8 +141,9 @@ public class Request implements Serializable {
    */
   @Override
   public String toString() {
-    return "Request[ID=" + requestId + ", itemIds=" + itemIds + ", Status=" + status
-        + ", priorityLevel=" + priorityLevel + ", requesterInfo=" + requesterInfo + "]";
+    return "Request[ID=" + requestId + ", itemIds=" + itemIds + ", itemQuantities=" + itemQuantities
+        + ", Status=" + status + ", priorityLevel=" + priorityLevel + ", requesterInfo="
+        + requesterInfo + "]";
   }
 
   /**
@@ -135,7 +159,8 @@ public class Request implements Serializable {
       return false;
     Request request = (Request) o;
     return requestId.equals(request.requestId) && itemIds.equals(request.itemIds)
-        && status.equals(request.status) && priorityLevel.equals(request.priorityLevel)
+        && itemQuantities.equals(request.itemQuantities) && status.equals(request.status)
+        && priorityLevel.equals(request.priorityLevel)
         && requesterInfo.equals(request.requesterInfo);
   }
 }
