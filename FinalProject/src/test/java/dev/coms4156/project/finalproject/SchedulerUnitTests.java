@@ -186,4 +186,12 @@ public class SchedulerUnitTests {
     // Assert that no dispatch has occurred and the status is still pending
     assertEquals("Pending", request10.getStatus());
   }
+
+  @Test
+  public void testEquals() {
+    assertEquals(true, scheduler.equals(scheduler));
+    assertEquals(false, scheduler.equals(1));
+    Scheduler newScheduler = new Scheduler(new ArrayList<>(), new HashMap<>());
+    assertEquals(false, scheduler.equals(newScheduler));
+  }
 }

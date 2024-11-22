@@ -1,18 +1,9 @@
 package dev.coms4156.project.finalproject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import dev.coms4156.project.finalproject.FinalProjectApplication;
-import dev.coms4156.project.finalproject.Item;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,5 +55,13 @@ public class RequestUnitTests {
     String newPriority = "Low";
     request.updatePriority(newPriority);
     assertEquals(newPriority, request.getPriorityLevel(), "Priority should be updated to 'Low'.");
+  }
+
+  @Test
+  public void testEquals() {
+    assertEquals(true, request.equals(request));
+    assertEquals(false, request.equals(1));
+    Request newRequest = new Request("REQ_NEW", itemIds, itemQuantities, status, priorityLevel, requesterInfo);
+    assertEquals(false, request.equals(newRequest));
   }
 }
