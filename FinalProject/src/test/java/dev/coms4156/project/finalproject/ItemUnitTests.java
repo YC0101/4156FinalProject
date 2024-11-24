@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -173,5 +172,12 @@ public class ItemUnitTests {
     // This should pass since the expiration date is allowed to be null, and the quantity is valid
     assertTrue(nullExpirationItem.validateAttributes(), 
         "The item should be valid when the expiration date is null but the quantity is positive");
+  }
+
+  @Test
+  public void testEquals() {
+    assertEquals(true, validItem.equals(validItem));
+    assertEquals(false, validItem.equals(1));
+    assertEquals(false, validItem.equals(testItem));
   }
 }

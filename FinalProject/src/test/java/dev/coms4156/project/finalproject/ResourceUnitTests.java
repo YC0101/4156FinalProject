@@ -75,6 +75,13 @@ public class ResourceUnitTests {
     assertEquals(testResource2.toString(), result);
   }
 
+  @Test
+  public void testEquals() {
+    assertEquals(true, testResource.equals(testResource));
+    assertEquals(false, testResource.equals(1));
+    assertEquals(false, testResource.equals(testResource2));
+  }
+
 
   /** The test resource instance used for testing. */
   public static Item testItem;

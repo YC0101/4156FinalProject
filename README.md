@@ -169,10 +169,13 @@ Welcome to test and try the functionalities! If you want to explore steps to dep
 
 ### Unit Tests
 
-1. Item Class: 100% Branch Coverage
-2. Resource Class: 100% Branch Coverage
-3. Scheduler Class: 88% Branch Coverage
-4. Route Controller: 100% Branch Coverage
+1. Item Class: 77% Branch Coverage
+2. Resource Class: 92% Branch Coverage
+3. Request Class: 88% Branch Coverage
+4. Scheduler Class: 84% Branch Coverage
+5. Route Controller: 93% Branch Coverage
+
+Total: 85% Branch Coverage
 
 ## Endpoints
 
@@ -184,19 +187,25 @@ Any malformed requests, such as incorrect parameter types, missing required para
 
 #### GET `/`, `/index`, `/home`
 
-- **Description:**  Redirects to the homepage, providing instructions on how to make API calls using a browser or tools like Postman.
+- **Description:** Redirects to the homepage, providing instructions on how to make API calls using a browser or tools like Postman.
+
 - **Expected Input Parameters:**
   - None
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a welcome message and instructions on how to make API calls.
+
 - **Upon Success:**
-  - HTTP 200 OK with a welcome message with instructions on how to make API calls.
+  - **HTTP 200 OK** with the welcome message and API call instructions.
+
 - **Upon Failure:**
-  - HTTP 500 Internal Server Error with "An Error has occurred" if an internal server error occurs.
+  - **HTTP 500 Internal Server Error** with "An Error has occurred" if an internal server error occurs.
 
 ---
 
 #### POST `/createDonation`
 
-- **Description:**  Handles the POST request for creating a new donation. It validates the input and triggers the donation creation in the service layer.
+- **Description:** Handles the POST request for creating a new donation. It validates the input and triggers the donation creation in the service layer.
 
 - **Expected Input Parameters:**
   - `resourceId` (String): The unique ID of the resource the item will be added to.
@@ -206,116 +215,229 @@ Any malformed requests, such as incorrect parameter types, missing required para
   - `donorId` (String): The ID of the donor who provided the item.
 
 - **Expected Output:**  
-  HTTP 200 OK status with a JSON object containing the donation details.
+  **HTTP 200 OK** status with a JSON object containing the donation details.  
   - This endpoint allows donors to add new donations to the system.
 
 - **Upon Success:**
-  - HTTP 200 OK with the details of the created item as a string.
+  - **HTTP 200 OK** with the details of the created item as a JSON object.
 
 - **Upon Failure:**
-  - HTTP 400 Bad Request with "Invalid Input Item" if the input parameters are invalid.
-  - HTTP 200 OK with "An Error has occurred" if an unexpected error occurs during processing.
+  - **HTTP 400 Bad Request** with "Invalid Input Item" if the input parameters are invalid.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs during processing.
 
 ---
 
 #### POST `/createRequest`
 
-- **Description:**  Handles the POST request for creating a new request by adding it to the scheduler.
+- **Description:** Handles the POST request for creating a new request. It validates the input and triggers the request creation in the service layer.
+
 - **Expected Input Parameters:**
   - `requestId` (String): The unique ID of the request to be added.
   - `itemIds` (List<String>): A list of item IDs being requested.
+  - `itemQuantities` (List<Integer>): A list of quantities corresponding to each item being requested.
   - `status` (String): The current status of the request.
   - `priorityLevel` (String): The priority level of the request.
   - `requesterInfo` (String): Information about the requester.
+  - `resourceId` (String): The unique ID of the resource the request is associated with.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a JSON object containing the details of the created request.  
+  - This endpoint allows users to create new requests within the system.
+
 - **Upon Success:**
-  - HTTP 200 OK with the unique ID of the created request.
+  - **HTTP 200 OK** with the details of the created request as a JSON object.
+
 - **Upon Failure:**
-  - HTTP 200 OK with "An Error has occurred" if an unexpected error occurs during processing.
+  - **HTTP 400 Bad Request** with "Invalid Input Request" if the input parameters are invalid.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs during processing.
 
 ---
 
 #### PATCH `/processRequests`
 
-- **Description:**  Attempts to dispatch current requests using the specified resource.
+- **Description:** Attempts to dispatch current requests associated with a specified resource. It processes the requests, updates item quantities and statuses, and marks requests as dispatched.
+
 - **Expected Input Parameters:**
-  - `resourceId` (String): The unique ID of the resource to use for dispatching.
+  - `resourceId` (String): The unique ID of the resource for which requests will be processed.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a JSON object containing details about the dispatched requests and updated items.  
+  - This endpoint allows the system to process and dispatch pending requests for a given resource.
+
 - **Upon Success:**
-  - HTTP 200 OK with information about successfully dispatched requests.
+  - **HTTP 200 OK** with a JSON object detailing the dispatched requests and the updated items.
+
 - **Upon Failure:**
-  - HTTP 200 OK with "An Error has occurred" if an unexpected error occurs during processing.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs during processing.
+
+---
+
+#### GET `/retrieveRequestsByResource`
+
+- **Description:** Returns the details of all requests associated with a specific resource.
+
+- **Expected Input Parameters:**
+  - `resourceId` (String): The unique ID of the resource whose requests are to be retrieved.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a JSON array of request objects if requests are found.  
+  - This endpoint allows users to retrieve all requests tied to a particular resource.
+
+- **Upon Success:**
+  - **HTTP 200 OK** with a JSON array containing the details of the requests.
+
+- **Upon Failure:**
+  - **HTTP 200 OK** with "Requests By Resource Not Found" if no requests are found for the specified resource.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs.
+
+---
+
+#### GET `/retrieveRequest`
+
+- **Description:** Returns the details of a specific request identified by its request ID within a given resource.
+
+- **Expected Input Parameters:**
+  - `resourceId` (String): The unique ID of the resource.
+  - `requestId` (String): The unique ID of the request to be retrieved.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a JSON object containing the request details if found.  
+  - This endpoint allows users to retrieve a specific request's details.
+
+- **Upon Success:**
+  - **HTTP 200 OK** with the details of the requested request as a JSON object.
+
+- **Upon Failure:**
+  - **HTTP 200 OK** with "Request Not Found" if the specific request does not exist.
+  - **HTTP 200 OK** with "Requests By Resource Not Found" if no requests are found for the specified resource.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs.
 
 ---
 
 #### GET `/retrieveResource`
 
-- **Description:**  Retrieves the details of a specific resource by its unique ID.
+- **Description:** Returns the details of a resource specified by its resource ID.
+
 - **Expected Input Parameters:**
-  - `resourceId` (String): The unique ID of the resource to retrieve.
+  - `resourceId` (String): The unique ID of the resource to be retrieved.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a JSON object containing the resource details if found.  
+  - This endpoint allows users to retrieve information about a specific resource.
+
 - **Upon Success:**
-  - HTTP 200 OK with the details of all items of the specified resource as a string.
+  - **HTTP 200 OK** with the details of the resource as a JSON object.
+
 - **Upon Failure:**
-  - HTTP 200 OK with "An Error has occurred" if an unexpected error occurs during processing.
+  - **HTTP 200 OK** with "Resource Not Found" if the specified resource does not exist.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs.
 
 ---
 
 #### GET `/retrieveItem`
 
-- **Description:**  Retrieves the details of a specific item within a resource by its unique ID.
+- **Description:** Returns the details of a specific item identified by its item ID within a given resource.
+
 - **Expected Input Parameters:**
-  - `resourceId` (String): The unique ID of the resource containing the item.
-  - `itemId` (String): The unique ID of the item to retrieve.
+  - `resourceId` (String): The unique ID of the resource.
+  - `itemId` (String): The unique ID of the item to be retrieved.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a JSON object containing the item details if found.  
+  - This endpoint allows users to retrieve information about a specific item within a resource.
+
 - **Upon Success:**
-  - HTTP 200 OK with the details of the specified item as a string.
+  - **HTTP 200 OK** with the details of the item as a JSON object.
+
 - **Upon Failure:**
-  - **HTTP 404 Not Found**  
-    Returns "Item Not Found" if the specified item does not exist.
-  - **HTTP 200 OK**  
-    Returns "An Error has occurred" if an unexpected error occurs during processing.
+  - **HTTP 200 OK** with "Item Not Found" if the specified item does not exist within the resource.
+  - **HTTP 200 OK** with "Resource Not Found" if the specified resource does not exist.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs.
 
 ---
 
 #### GET `/retrieveAvailableItems`
 
-- **Description:**  Retrieves all available items (status code 'available') within a specified resource.
+- **Description:** Returns all available items (items with status code 'available') within a specified resource.
+
 - **Expected Input Parameters:**
-  - `resourceId` (String): The unique ID of the resource to search within.
+  - `resourceId` (String): The unique ID of the resource.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a JSON array of available item objects if found.  
+  - This endpoint allows users to retrieve all items that are currently available for dispatch or use within a resource.
+
 - **Upon Success:**
-  - HTTP 200 OK with a list of available items in plain text format.
+  - **HTTP 200 OK** with a JSON array containing the details of all available items.
+
 - **Upon Failure:**
-  - HTTP 404 Not Found with "No Available Items Found" if there are no available items in the specified resource.
-  - HTTP 200 OK with "An Error has occurred" if an unexpected error occurs during processing.
+  - **HTTP 200 OK** with "No Available Items Found" if no available items are found within the resource.
+  - **HTTP 200 OK** with "Resource Not Found" if the specified resource does not exist.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs.
 
 ---
 
 #### GET `/retrieveDispatchedItems`
 
-- **Description:**  Retrieves all dispatched items (status code 'dispatched') within a specified resource.
+- **Description:** Returns all dispatched items (items with status code 'dispatched') within a specified resource.
+
 - **Expected Input Parameters:**
-  - `resourceId` (String): The unique ID of the resource to search within.
+  - `resourceId` (String): The unique ID of the resource.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a JSON array of dispatched item objects if found.  
+  - This endpoint allows users to retrieve all items that have been dispatched within a resource.
+
 - **Upon Success:**
-  - HTTP 200 OK with a list of dispatched items in plain text format.
+  - **HTTP 200 OK** with a JSON array containing the details of all dispatched items.
+
 - **Upon Failure:**
-  - **HTTP 404 Not Found**  
-    Returns "No Dispatched Items Found" if there are no dispatched items in the specified resource.
-  - **HTTP 200 OK**  
-    Returns "An Error has occurred" if an unexpected error occurs during processing.
+  - **HTTP 200 OK** with "No Dispatched Items Found" if no dispatched items are found within the resource.
+  - **HTTP 200 OK** with "Resource Not Found" if the specified resource does not exist.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs.
 
 ---
 
 #### GET `/retrieveItemsByDonor`
 
-- **Description:**  Retrieves all items provided by a specified donor within a given resource.
+- **Description:** Returns the details of items provided by a specified donor within a given resource.
+
 - **Expected Input Parameters:**
-  - `resourceId` (String): The unique ID of the resource to search within.
+  - `resourceId` (String): The unique ID of the resource.
   - `donorId` (String): The ID of the donor whose items are to be retrieved.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a JSON array of item objects if found.  
+  - This endpoint allows users to retrieve all items donated by a specific donor within a resource.
+
 - **Upon Success:**
-  - **HTTP 200 OK**  
-    Returns a list of items donated by the specified donor in plain text format.
+  - **HTTP 200 OK** with a JSON array containing the details of the items provided by the donor.
+
 - **Upon Failure:**
-  - **HTTP 404 Not Found**  
-    Returns "No Items Found" if there are no items donated by the specified donor in the resource.
-  - **HTTP 200 OK**  
-    Returns "An Error has occurred" if an unexpected error occurs during processing.
+  - **HTTP 200 OK** with "No Items Found" if no items are found for the specified donor within the resource.
+  - **HTTP 200 OK** with "Resource Not Found" if the specified resource does not exist.
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs.
+
+---
+
+#### DELETE `/resetTestData`
+
+- **Description:** Attempts to reset and clear all test data associated with a specified resource.
+
+- **Expected Input Parameters:**
+  - `resourceId` (String): The unique ID of the test resource to be reset. Defaults to "R_TEST" if not provided.
+
+- **Expected Output:**  
+  **HTTP 200 OK** status with a confirmation message upon successful reset.  
+  - This endpoint allows administrators to clear test data for a given resource, facilitating a fresh state for testing purposes.
+
+- **Upon Success:**
+  - **HTTP 200 OK** with the message "Reset `<resourceId>` successfully".
+
+- **Upon Failure:**
+  - **HTTP 200 OK** with "An Error has occurred" if an unexpected error occurs during the reset process.
+
+---
 
 ## Project Management and Contributions
 
@@ -328,8 +450,8 @@ You can view our **GitHub Projects** board [here](https://github.com/YC0101/4156
 
 - **Yanxi Chen**: Resource class implementation and testing.
 - **Qirui Ruan**: Item class implementation and testing.
-- **Xinchen Zhang**: Scheduler class implementation and testing.
-- **Songwen Zhao**: API development and request handling.
+- **Xinchen Zhang**: Scheduler class implementation, testing, and database creation.
+- **Songwen Zhao**: API development, database service, overall adjustments and tests.
 - **Charlie Shen**: Request class implementation and testing.
 
 The following tasks are tracked via the GitHub project board:

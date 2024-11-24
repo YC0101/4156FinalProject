@@ -9,13 +9,26 @@
 		<relativePath/>
 	</parent>
 	<groupId>dev.coms4156.project</groupId>
-	<artifactId>IndividualProject</artifactId>
+	<artifactId>FinalProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>IndividualProject</name>
-	<description>IndividualProject</description>
+	<name>FinalProject</name>
+	<description>FinalProject</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+
+	<dependencyManagement>
+        <dependencies>
+          <dependency>
+          <groupId>com.google.cloud</groupId>
+          <artifactId>spring-cloud-gcp-dependencies</artifactId>
+          <version>4.1.4</version>
+          <type>pom</type>
+          <scope>import</scope>
+          </dependency>
+      </dependencies>
+    </dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -27,6 +40,29 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.33</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -94,7 +130,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>dev.coms4156.project.individualproject</mainClass>
+							<mainClass>dev.coms4156.project.finalproject</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
