@@ -69,7 +69,9 @@ public class RouteController {
       Item newItem = new Item(itemType, quantity, expirationDate, donorId);
 
       if (!newItem.validateAttributes()) {
-        return new ResponseEntity<>("Invalid Input Item", HttpStatus.BAD_REQUEST);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "Invalid Input Item");
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
       } else {
         database.addItem(newItem, resourceId.toUpperCase(Locale.ENGLISH));
         return new ResponseEntity<>(newItem, HttpStatus.OK);
@@ -108,7 +110,9 @@ public class RouteController {
           new Request(requestId, itemIds, itemQuantities, status, priorityLevel, requesterInfo);
 
       if(!newRequest.validateAttributes()) {
-        return new ResponseEntity<>("Invalid Input Request", HttpStatus.BAD_REQUEST);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "Invalid Input Request");
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
       } else {
         database.addRequest(newRequest, resourceId.toUpperCase(Locale.ENGLISH));
         return new ResponseEntity<>(newRequest, HttpStatus.OK);
@@ -168,7 +172,10 @@ public class RouteController {
       List<Request> requests =
           database.fetchRequestsByResource(resourceId.toUpperCase(Locale.ENGLISH));
       if (requests.isEmpty()) {
-        return new ResponseEntity<>("Requests By Resource Not Found", HttpStatus.OK);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "Requests By Resource Not Found");
+        message.put("resourceId", resourceId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
       } else {
         return new ResponseEntity<>(requests, HttpStatus.OK);
       }
@@ -195,9 +202,15 @@ public class RouteController {
       if (requests.isEmpty()) {
         requests = database.fetchRequestsByResource(resourceId.toUpperCase(Locale.ENGLISH), 1);
         if (requests.isEmpty()) {
-          return new ResponseEntity<>("Requests By Resource Not Found", HttpStatus.OK);
+          Map<String, Object> message = new HashMap<>();
+          message.put("message", "Requests By Resource Not Found");
+          message.put("resourceId", resourceId);
+          return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-          return new ResponseEntity<>("Request Not Found", HttpStatus.OK);
+          Map<String, Object> message = new HashMap<>();
+          message.put("message", "Request Not Found");
+          message.put("resourceId", resourceId);
+          return new ResponseEntity<>(message, HttpStatus.OK);
         }
       } else {
         return new ResponseEntity<>(requests.get(0), HttpStatus.OK);
@@ -220,7 +233,10 @@ public class RouteController {
     try {
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
       if (resource.getAllItems().isEmpty()) {
-        return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "Resource Not Found");
+        message.put("resourceId", resourceId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
       } else {
         return new ResponseEntity<>(resource, HttpStatus.OK);
       }
@@ -250,9 +266,16 @@ public class RouteController {
         resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH), 1);
         itemsMapping = resource.getAllItems();
         if (itemsMapping.isEmpty()) {
-          return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
+          Map<String, Object> message = new HashMap<>();
+          message.put("message", "Resource Not Found");
+          message.put("resourceId", resourceId);
+          return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-          return new ResponseEntity<>("Item Not Found", HttpStatus.OK);
+          Map<String, Object> message = new HashMap<>();
+          message.put("message", "Item Not Found");
+          message.put("resourceId", resourceId);
+          message.put("itemId", itemId);
+          return new ResponseEntity<>(message, HttpStatus.OK);
         }
       } else {
         return new ResponseEntity<>(itemsMapping.get(itemId), HttpStatus.OK);
@@ -278,7 +301,10 @@ public class RouteController {
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
       if (itemsMapping.isEmpty()) {
-        return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "Resource Not Found");
+        message.put("resourceId", resourceId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
       }
 
       List<Item> result = new ArrayList<>();
@@ -290,7 +316,10 @@ public class RouteController {
       }
 
       if (result.isEmpty()) {
-        return new ResponseEntity<>("No Available Items Found", HttpStatus.OK);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "No Available Items Found");
+        message.put("resourceId", resourceId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
       } else {
         return new ResponseEntity<>(result, HttpStatus.OK);
       }
@@ -315,7 +344,10 @@ public class RouteController {
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
       if (itemsMapping.isEmpty()) {
-        return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "Resource Not Found");
+        message.put("resourceId", resourceId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
       }
 
       List<Item> result = new ArrayList<>();
@@ -327,7 +359,10 @@ public class RouteController {
       }
 
       if (result.isEmpty()) {
-        return new ResponseEntity<>("No Dispatched Items Found", HttpStatus.OK);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "No Dispatched Items Found");
+        message.put("resourceId", resourceId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
       } else {
         return new ResponseEntity<>(result, HttpStatus.OK);
       }
@@ -355,7 +390,10 @@ public class RouteController {
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
       itemsMapping = resource.getAllItems();
       if (itemsMapping.isEmpty()) {
-        return new ResponseEntity<>("Resource Not Found", HttpStatus.OK);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "Resource Not Found");
+        message.put("resourceId", resourceId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
       }
 
       List<Item> result = new ArrayList<>();
@@ -367,7 +405,11 @@ public class RouteController {
       }
 
       if (result.isEmpty()) {
-        return new ResponseEntity<>("No Items Found", HttpStatus.OK);
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "Items By Donor Not Found");
+        message.put("resourceId", resourceId);
+        message.put("donorId", donorId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
       } else {
         return new ResponseEntity<>(result, HttpStatus.OK);
       }
@@ -387,7 +429,9 @@ public class RouteController {
     try {
       database.delRequestsByResourceId(resourceId.toUpperCase(Locale.ENGLISH));
       database.delResource(resourceId.toUpperCase(Locale.ENGLISH));
-      return new ResponseEntity<>("Reset " + resourceId + " successfully", HttpStatus.OK);
+      Map<String, Object> message = new HashMap<>();
+      message.put("message", "Reset " + resourceId + " successfully");
+      return new ResponseEntity<>(message, HttpStatus.OK);
     } catch (Exception e) {
       return handleException(e);
     }
