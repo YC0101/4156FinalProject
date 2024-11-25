@@ -60,11 +60,11 @@ public class RouteController {
    *         HTTP 200 response or, an appropriate message indicating the proper response.
    */
   @PostMapping(value = "/createDonation", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> createDonation(@RequestParam(value = "resourceId") String resourceId,
-      @RequestParam(value = "itemType") String itemType,
-      @RequestParam(value = "quantity") int quantity,
-      @RequestParam(value = "expirationDate") LocalDate expirationDate,
-      @RequestParam(value = "donorId") String donorId) {
+  public ResponseEntity<?> createDonation(@RequestParam("resourceId") String resourceId,
+      @RequestParam("itemType") String itemType,
+      @RequestParam("quantity") int quantity,
+      @RequestParam("expirationDate") LocalDate expirationDate,
+      @RequestParam("donorId") String donorId) {
     try {
       Item newItem = new Item(itemType, quantity, expirationDate, donorId);
 
@@ -73,7 +73,8 @@ public class RouteController {
         message.put("message", "Invalid Input Item");
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
       } else {
-        database.addItem(newItem, resourceId.toUpperCase(Locale.ENGLISH));
+        database.addItem(newItem,
+            resourceId.toUpperCase(Locale.ENGLISH));
         return new ResponseEntity<>(newItem, HttpStatus.OK);
       }
     } catch (Exception e) {
@@ -98,18 +99,18 @@ public class RouteController {
    *         and an HTTP 200 response or, an appropriate message indicating the proper response.
    */
   @PostMapping(value = "/createRequest", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> createRequest(@RequestParam(value = "requestId") String requestId,
-      @RequestParam(value = "itemIds") List<String> itemIds,
-      @RequestParam(value = "itemQuantities") List<Integer> itemQuantities,
-      @RequestParam(value = "status") String status,
-      @RequestParam(value = "priorityLevel") String priorityLevel,
-      @RequestParam(value = "requesterInfo") String requesterInfo,
-      @RequestParam(value = "resourceId") String resourceId) {
+  public ResponseEntity<?> createRequest(@RequestParam("requestId") String requestId,
+      @RequestParam("itemIds") List<String> itemIds,
+      @RequestParam("itemQuantities") List<Integer> itemQuantities,
+      @RequestParam("status") String status,
+      @RequestParam("priorityLevel") String priorityLevel,
+      @RequestParam("requesterInfo") String requesterInfo,
+      @RequestParam("resourceId") String resourceId) {
     try {
       Request newRequest =
           new Request(requestId, itemIds, itemQuantities, status, priorityLevel, requesterInfo);
 
-      if(!newRequest.validateAttributes()) {
+      if (!newRequest.validateAttributes()) {
         Map<String, Object> message = new HashMap<>();
         message.put("message", "Invalid Input Request");
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
@@ -132,7 +133,7 @@ public class RouteController {
    *         response.
    */
   @PatchMapping(value = "/processRequests", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> processRequests(@RequestParam(value = "resourceId") String resourceId) {
+  public ResponseEntity<?> processRequests(@RequestParam("resourceId") String resourceId) {
     try {
       List<Request> requests =
           database.fetchRequestsByResource(resourceId.toUpperCase(Locale.ENGLISH));
@@ -167,7 +168,7 @@ public class RouteController {
    */
   @GetMapping(value = "/retrieveRequestsByResource", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> retrieveRequestsByResource(
-      @RequestParam(value = "resourceId") String resourceId) {
+      @RequestParam("resourceId") String resourceId) {
     try {
       List<Request> requests =
           database.fetchRequestsByResource(resourceId.toUpperCase(Locale.ENGLISH));
@@ -193,8 +194,8 @@ public class RouteController {
    *         HTTP 200 response or, or an error message if no requests are not found.
    */
   @GetMapping(value = "/retrieveRequest", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> retrieveRequest(@RequestParam(value = "resourceId") String resourceId,
-      @RequestParam(value = "requestId") String requestId) {
+  public ResponseEntity<?> retrieveRequest(@RequestParam("resourceId") String resourceId,
+      @RequestParam("requestId") String requestId) {
     try {
       List<Request> requests =
           database.fetchRequest(resourceId.toUpperCase(Locale.ENGLISH), requestId);
@@ -229,7 +230,7 @@ public class RouteController {
    *         HTTP 200 response or, or an error message if the item is not found.
    */
   @GetMapping(value = "/retrieveResource", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> retrieveResource(@RequestParam(value = "resourceId") String resourceId) {
+  public ResponseEntity<?> retrieveResource(@RequestParam("resourceId") String resourceId) {
     try {
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
       if (resource.getAllItems().isEmpty()) {
@@ -256,8 +257,8 @@ public class RouteController {
    *         200 response or, or an error message if the item is not found.
    */
   @GetMapping(value = "/retrieveItem", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> retrieveItem(@RequestParam(value = "resourceId") String resourceId,
-      @RequestParam(value = "itemId") String itemId) {
+  public ResponseEntity<?> retrieveItem(@RequestParam("resourceId") String resourceId,
+      @RequestParam("itemId") String itemId) {
     try {
       Resource resource = database.fetchItem(resourceId.toUpperCase(Locale.ENGLISH), itemId);
       Map<String, Item> itemsMapping = resource.getAllItems();
@@ -295,7 +296,7 @@ public class RouteController {
    */
   @GetMapping(value = "/retrieveAvailableItems", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> retrieveAvailableItems(
-      @RequestParam(value = "resourceId") String resourceId) {
+      @RequestParam("resourceId") String resourceId) {
     try {
       Map<String, Item> itemsMapping;
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
@@ -338,7 +339,7 @@ public class RouteController {
    */
   @GetMapping(value = "/retrieveDispatchedItems", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> retrieveDispatchedItems(
-      @RequestParam(value = "resourceId") String resourceId) {
+      @RequestParam("resourceId") String resourceId) {
     try {
       Map<String, Item> itemsMapping;
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));
@@ -383,8 +384,8 @@ public class RouteController {
    */
   @GetMapping(value = "/retrieveItemsByDonor", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> retrieveItemsByDonor(
-      @RequestParam(value = "resourceId") String resourceId,
-      @RequestParam(value = "donorId") String donorId) {
+      @RequestParam("resourceId") String resourceId,
+      @RequestParam("donorId") String donorId) {
     try {
       Map<String, Item> itemsMapping;
       Resource resource = database.fetchResource(resourceId.toUpperCase(Locale.ENGLISH));

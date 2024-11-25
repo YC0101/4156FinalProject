@@ -3,6 +3,7 @@ package dev.coms4156.project.finalproject;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -59,13 +60,8 @@ public class Item implements Serializable {
    * @return true if the attributes are valid, false otherwise.
    */
   public boolean validateAttributes() {
-    if (this.quantity <= 0) {
-      return false; // Quantity must be positive
-    }
-    if (this.expirationDate != null && this.expirationDate.isBefore(LocalDate.now())) {
-      return false; // Expiration date must not be in the past
-    }
-    return true;
+    return !((this.expirationDate != null && this.expirationDate.isBefore(LocalDate.now()))
+            || this.quantity <= 0);
   }
 
   /**
@@ -133,18 +129,25 @@ public class Item implements Serializable {
 
   /**
    * Returns whether the other object is equal to this one (deep comparison).
-   * 
-   * @return The other object.
+   *
+   * @return boolean.
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (!(o instanceof Item))
+    }
+    if (!(o instanceof Item)) {
       return false;
+    }
     Item item = (Item) o;
     return itemId.equals(item.itemId) && itemType.equals(item.itemType) && quantity == item.quantity
         && expirationDate.equals(item.expirationDate) && status.equals(item.status)
         && donorId.equals(item.donorId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(itemId, itemType, quantity, expirationDate, status, donorId);
   }
 }

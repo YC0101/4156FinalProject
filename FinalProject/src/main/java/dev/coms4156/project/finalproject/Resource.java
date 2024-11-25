@@ -3,6 +3,7 @@ package dev.coms4156.project.finalproject;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a resource providing different items. This class stores information about the
@@ -91,17 +92,24 @@ public class Resource implements Serializable {
 
   /**
    * Returns whether the other object is equal to this one (deep comparison).
-   * 
+   *
    * @return The other object.
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (!(o instanceof Resource))
+    }
+    if (!(o instanceof Resource)) {
       return false;
+    }
     Resource resource = (Resource) o;
     return items.equals(resource.items) && resourceId.equals(resource.resourceId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(items, resourceId);
   }
 
   @Serial

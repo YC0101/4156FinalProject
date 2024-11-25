@@ -47,7 +47,8 @@ public class SchedulerUnitTests {
   @Test
   public void testProcessRequestsSuccessfulDispatch() {
     // Add a valid request where all resources are available
-    Request request1 = new Request("REQ1", Arrays.asList("water", "food"), Arrays.asList(1, 1), "Pending", "High",
+    Request request1 = new Request("REQ1", Arrays.asList("water", "food"),
+        Arrays.asList(1, 1), "Pending", "High",
         "John Doe");
     requests.add(request1);
 
@@ -65,7 +66,8 @@ public class SchedulerUnitTests {
   @Test
   public void testProcessRequestsResourceUnavailable() {
     // Add a request where one resource is not available
-    Request request2 = new Request("REQ2", Arrays.asList("water", "medicine"), Arrays.asList(1, 1), "Pending", "Low",
+    Request request2 = new Request("REQ2", Arrays.asList("water", "medicine"),
+        Arrays.asList(1, 1), "Pending", "Low",
         "Jane Doe");
     requests.add(request2);
 
@@ -83,10 +85,12 @@ public class SchedulerUnitTests {
   @Test
   public void testProcessRequestsInsufficientResourceQuantity() {
     // Modify the resource repository to have insufficient quantity for food
-    resourceRepository.put("food", new Item("food", 0, LocalDate.of(2025, 12, 25), "Donor1"));
+    resourceRepository.put("food", new Item("food", 0,
+        LocalDate.of(2025, 12, 25), "Donor1"));
 
     // Add a request that requires food
-    Request request3 = new Request("REQ3", Arrays.asList("food"), Arrays.asList(1), "Pending", "Low", "Jake Doe");
+    Request request3 = new Request("REQ3", Arrays.asList("food"), Arrays.asList(1),
+        "Pending", "Low", "Jake Doe");
     requests.add(request3);
 
     // Process the requests
@@ -102,8 +106,10 @@ public class SchedulerUnitTests {
   @Test
   public void testProcessMultipleRequests() {
     // Add multiple requests to the list
-    Request request4 = new Request("REQ4", Arrays.asList("water"), Arrays.asList(1), "Pending", "High", "Tom Doe");
-    Request request5 = new Request("REQ5", Arrays.asList("food"), Arrays.asList(1), "Pending", "Low", "Sara Doe");
+    Request request4 = new Request("REQ4", Arrays.asList("water"), Arrays.asList(1),
+        "Pending", "High", "Tom Doe");
+    Request request5 = new Request("REQ5", Arrays.asList("food"), Arrays.asList(1),
+        "Pending", "Low", "Sara Doe");
 
     requests.add(request4);
     requests.add(request5);
@@ -121,8 +127,8 @@ public class SchedulerUnitTests {
   @Test
   public void testAddRequest() {
     // Create a new request
-    Request request6 = new Request("REQ6", Arrays.asList("water"), Arrays.asList(1), "Pending", "Medium",
-        "Alice Doe");
+    Request request6 = new Request("REQ6", Arrays.asList("water"), Arrays.asList(1),
+        "Pending", "Medium", "Alice Doe");
 
     // Add the request
     scheduler.addRequest(request6);
@@ -135,8 +141,8 @@ public class SchedulerUnitTests {
   @Test
   public void testCheckResourceAvailabilityAllAvailable() {
     // Add a valid request
-    Request request7 = new Request("REQ7", Arrays.asList("water", "food"), Arrays.asList(1, 1), "Pending", "High",
-        "John Doe");
+    Request request7 = new Request("REQ7", Arrays.asList("water", "food"), Arrays.asList(1, 1),
+        "Pending", "High", "John Doe");
 
     // Check availability
     boolean available = scheduler.checkResourceAvailability(request7);
@@ -148,7 +154,8 @@ public class SchedulerUnitTests {
   @Test
   public void testCheckResourceAvailabilityNotAvailable() {
     // Add a request where the resource does not exist
-    Request request8 = new Request("REQ8", Arrays.asList("medicine"), Arrays.asList(1), "Pending", "Low", "Jane Doe");
+    Request request8 = new Request("REQ8", Arrays.asList("medicine"), Arrays.asList(1),
+        "Pending", "Low", "Jane Doe");
 
     // Check availability
     boolean available = scheduler.checkResourceAvailability(request8);
@@ -160,7 +167,8 @@ public class SchedulerUnitTests {
   @Test
   public void testScheduleDispatchSuccessfulDispatch() {
     // Add a valid request
-    Request request9 = new Request("REQ9", Arrays.asList("water"), Arrays.asList(1), "Pending", "High", "John Doe");
+    Request request9 = new Request("REQ9", Arrays.asList("water"), Arrays.asList(1),
+        "Pending", "High", "John Doe");
     requests.add(request9);
 
     // Schedule the dispatch
@@ -176,8 +184,8 @@ public class SchedulerUnitTests {
   @Test
   public void testScheduleDispatchResourceUnavailable() {
     // Add a request with a non-existing resource
-    Request request10 = new Request("REQ10", Arrays.asList("medicine"), Arrays.asList(1), "Pending", "Low",
-        "Jane Doe");
+    Request request10 = new Request("REQ10", Arrays.asList("medicine"), Arrays.asList(1),
+        "Pending", "Low", "Jane Doe");
     requests.add(request10);
 
     // Attempt to schedule dispatch

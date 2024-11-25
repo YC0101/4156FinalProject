@@ -3,6 +3,7 @@ package dev.coms4156.project.finalproject;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represents a request for resources, tracking its status, items involved, and other
@@ -49,17 +50,13 @@ public class Request implements Serializable {
       return false;
     }
     for (Integer quantity : itemQuantities) {
-      if (quantity <= 0)
+      if (quantity <= 0) {
         return false;
+      }
     }
-    if (!("Dispatched".equals(status) || "Pending".equals(status))) {
-      return false;
-    }
-    if (!("Low".equals(priorityLevel) || "Medium".equals(priorityLevel)
-        || "High".equals(priorityLevel))) {
-      return false;
-    }
-    return true;
+    return ("Low".equals(priorityLevel) || "Medium".equals(priorityLevel)
+            || "High".equals(priorityLevel)) && ("Dispatched".equals(status)
+            || "Pending".equals(status));
   }
 
   /**
@@ -148,19 +145,26 @@ public class Request implements Serializable {
 
   /**
    * Returns whether the other object is equal to this one (deep comparison).
-   * 
-   * @return The other object.
+   *
+   * @return whether the other object is equal to this one.
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (!(o instanceof Request))
+    }
+    if (!(o instanceof Request)) {
       return false;
+    }
     Request request = (Request) o;
     return requestId.equals(request.requestId) && itemIds.equals(request.itemIds)
         && itemQuantities.equals(request.itemQuantities) && status.equals(request.status)
         && priorityLevel.equals(request.priorityLevel)
         && requesterInfo.equals(request.requesterInfo);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(requestId, itemIds, itemQuantities, priorityLevel, requesterInfo);
   }
 }

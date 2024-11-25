@@ -1,6 +1,7 @@
 package dev.coms4156.project.finalproject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,22 +73,22 @@ public class RouteControllerUnitTests {
     Item item2 = new Item("Cloth", 3, LocalDate.now().plusDays(120), "Robert");
     database.addItem(item1, resourceId);
     database.addItem(item2, resourceId);
-    Request request1 = new Request("REQ1", Arrays.asList(item1.getItemId(), item2.getItemId()), Arrays.asList(4, 2),
-        "Pending", "High", "John Doe");
-    Request request2 = new Request("REQ2", Arrays.asList(item1.getItemId()), Arrays.asList(5),
-        "Pending", "High", "John Doe");
-    Request request3 = new Request("REQ3", Arrays.asList(item1.getItemId()), Arrays.asList(2),
-        "Pending", "High", "John Doe");
-    List<Request> requests = new ArrayList<>();
+    Request request1 = new Request("REQ1", Arrays.asList(item1.getItemId(), item2.getItemId()),
+            Arrays.asList(4, 2), "Pending", "High", "John Doe");
     database.addRequest(request1, resourceId);
+    Request request2 = new Request("REQ2", Arrays.asList(item1.getItemId()), Arrays.asList(5),
+            "Pending", "High", "John Doe");
     database.addRequest(request2, resourceId);
+    Request request3 = new Request("REQ3", Arrays.asList(item1.getItemId()), Arrays.asList(2),
+            "Pending", "High", "John Doe");
     database.addRequest(request3, resourceId);
 
-    ResponseEntity<?> response = testRouteController.processRequests(resourceId);
     request1.setStatus("Dispatched");
     request2.setStatus("Dispatched");
+    List<Request> requests = new ArrayList<>();
     requests.add(request1);
     requests.add(request2);
+    ResponseEntity<?> response = testRouteController.processRequests(resourceId);
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(requests, ((Map<?, ?>) response.getBody()).get("Dispatched"));
   }
@@ -173,12 +174,12 @@ public class RouteControllerUnitTests {
   public void testRetrieveAvailableItems() {
     Item item1 = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
     Item item2 = new Item("Clothing", 5, LocalDate.now().plusDays(180), "Charlie");
-    List<Item> items = new ArrayList<>();
     item2.markAsDispatched();
     database.addItem(item1, resourceId);
     database.addItem(item2, resourceId);
 
     ResponseEntity<?> response = testRouteController.retrieveAvailableItems(resourceId);
+    List<Item> items = new ArrayList<>();
     items.add(item1);
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(items, response.getBody());
@@ -198,7 +199,6 @@ public class RouteControllerUnitTests {
   public void testRetrieveDispatchedItems() {
     Item item1 = new Item("Food", 10, LocalDate.now().plusDays(7), "Robert");
     Item item2 = new Item("Clothing", 5, LocalDate.now().plusDays(180), "Charlie");
-    List<Item> items = new ArrayList<>();
     database.addItem(item1, resourceId);
     database.addItem(item2, resourceId);
 
@@ -209,6 +209,7 @@ public class RouteControllerUnitTests {
     item1.markAsDispatched();
     database.updateItemStatus(resourceId, item1.getItemId(), "dispatched");
     response = testRouteController.retrieveDispatchedItems(resourceId);
+    List<Item> items = new ArrayList<>();
     items.add(item1);
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(items, response.getBody());

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -150,17 +151,24 @@ public class Scheduler {
 
   /**
    * Returns whether the other object is equal to this one (deep comparison).
-   * 
+   *
    * @return The other object.
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (!(o instanceof Scheduler))
+    }
+    if (!(o instanceof Scheduler)) {
       return false;
+    }
     Scheduler scheduler = (Scheduler) o;
     return requests.equals(scheduler.requests)
         && resourceRepository.equals(scheduler.resourceRepository);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(requests, resourceRepository);
   }
 }
