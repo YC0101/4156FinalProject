@@ -62,7 +62,7 @@ public class ItemUnitTests {
    * Test the attribute validation for a valid item.
    */
   @Test
-  public void testValidateAttributes_ValidItem() {
+  public void testValidateAttributesValidItem() {
     assertTrue(validItem.validateAttributes()); 
   }
 
@@ -70,7 +70,7 @@ public class ItemUnitTests {
    * Test validation for an expired item.
    */
   @Test
-  public void testValidateAttributes_ExpiredItem() {
+  public void testValidateAttributesExpiredItem() {
     assertFalse(expiredItem.validateAttributes()); // This should fail because the item is expired
   }
 
@@ -78,7 +78,7 @@ public class ItemUnitTests {
    * Test validation for an item with zero quantity.
    */
   @Test
-  public void testValidateAttributes_ZeroQuantityItem() {
+  public void testValidateAttributesZeroQuantityItem() {
     assertFalse(zeroQuantityItem.validateAttributes()); 
   }
 
@@ -165,7 +165,7 @@ public class ItemUnitTests {
    * Test validation for an item with a valid quantity but a null expiration date.
    */
   @Test
-  public void testValidateAttributes_NullExpirationDate() {
+  public void testValidateAttributesNullExpirationDate() {
     // Creating an item with a null expiration date and valid quantity
     Item nullExpirationItem = new Item("Water", 5, null, "DonorXYZ");
       

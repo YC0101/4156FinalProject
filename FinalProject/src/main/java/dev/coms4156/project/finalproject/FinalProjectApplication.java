@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import org.apache.commons.lang3.tuple.Pair;
@@ -38,24 +39,27 @@ public class FinalProjectApplication implements CommandLineRunner {
   public void run(String[] args) {
     for (String arg : args) {
       if ("Factory Reset".equals(arg)) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Are you sure you want to restore to factory settings? (Y/N): ");
-        while (true) {
-          String input = scanner.nextLine().trim().toUpperCase();
-          if ("Y".equals(input)) {
-            System.out.println(" -- Reseting Database");
-            resetData();
-            System.out.println("System Setup");
-            break;
-          } else if ("N".equals(input)) {
-            System.out.println("Factory reset has been cancelled.");
-            break;
-          } else {
-            System.out.println("Invalid input. Please enter 'Y' for Yes or 'N' for No.");
+        try(Scanner scanner = new Scanner(System.in)) {
+          System.out.print("Are you sure you want to restore to factory settings? (Y/N): ");
+          while (true) {
+            String input = scanner.nextLine().trim().toUpperCase(Locale.ENGLISH);
+            if ("Y".equals(input)) {
+              System.out.println(" -- Reseting Database");
+              resetData();
+              System.out.println("System Setup");
+              break;
+            } else if ("N".equals(input)) {
+              System.out.println("Factory reset has been cancelled.");
+              break;
+            } else {
+              System.out.println("Invalid input. Please enter 'Y' for Yes or 'N' for No.");
+            }
           }
         }
+      } else {
+        System.out.println("Arg detected:" + arg);
+        return;
       }
-      return;
     }
     System.out.println("Start up");
   }
@@ -146,7 +150,7 @@ public class FinalProjectApplication implements CommandLineRunner {
   /**
    * Overrides the default resource, used when testing.
    *
-   * @param testDatabase A {@code String} test resource ID.
+   * @param resourceId A {@code String} test resource ID.
    */
   public void overriedDefaultResourceId(String resourceId) {
     this.defaultResourceId = resourceId;
