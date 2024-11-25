@@ -174,8 +174,31 @@ Welcome to test and try the functionalities! If you want to explore steps to dep
 3. Request Class: 88% Branch Coverage
 4. Scheduler Class: 84% Branch Coverage
 5. Route Controller: 93% Branch Coverage
+6. FinalProjectApplication: 68% Branch Coverage
+7. DatabaseService: 100% Branch Coverage
 
 Total: 85% Branch Coverage
+![Screenshots of Branch Coverage.](/screenshots/coverage1.png)
+
+
+
+### Integration Tests
+
+Integration test is implemented inside FinalProjectApplicationTests in serverIntegrationTest().
+The test checked the communication between the server and the database by creating new resource and request with items and modifiying them to exam its use in a real-life case. 
+
+## GCP database
+
+Our database is created using DataGrip and deployed on GCP. For security reasons, please contact our group directly for address and connection information if a test is needed.
+
+There are two tables inside the database: resource and request. The database structure is as below:
+```TABLE resource (itemId VARCHAR(255), itemType VARCHAR(255), quantity INT, expirationDate DATE, status VARCHAR(255), donorId VARCHAR(255), resourceId VARCHAR(255));```
+
+```TABLE request (requestId VARCHAR(255), itemId VARCHAR(255), status VARCHAR(255), priorityLevel VARCHAR(255), requesterInfo VARCHAR(255), resourceId VARCHAR(255));```
+
+Below is the database at initialization:
+![Screenshots of Database.](/screenshots/data1.png)
+![Screenshots of Database.](/screenshots/data2.png)
 
 ## Endpoints
 
