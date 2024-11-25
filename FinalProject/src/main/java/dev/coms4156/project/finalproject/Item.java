@@ -129,8 +129,8 @@ public class Item implements Serializable {
 
   /**
    * Returns whether the other object is equal to this one (deep comparison).
-   * 
-   * @return The other object.
+   *
+   * @return boolean.
    */
   @Override
   public boolean equals(Object o) {

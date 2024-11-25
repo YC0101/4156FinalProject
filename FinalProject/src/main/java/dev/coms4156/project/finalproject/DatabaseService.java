@@ -9,11 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+/**
+ * This class is for the connection of database on GCP.
+ */
 @Service
 public class DatabaseService {
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
+  /**
+   * Converts a query result into a mapping of item IDs to {@link Item} objects.
+   *
+   * @param queryResult   a list of maps, where each map represents a row in the query result.
+   * @return    a map where the keys are item IDs (Strings) and the values are {@link Item} objects.
+   */
   public static Map<String, Item> resultToItems(List<Map<String, Object>> queryResult) {
     Map<String, Item> itemsMapping = new HashMap<>();
     for (Map<String, Object> row : queryResult) {
@@ -26,6 +35,15 @@ public class DatabaseService {
     return itemsMapping;
   }
 
+  /**
+   * This method processes a list of database query results, where each result is represented
+   * as a map of column names to their respective values. It creates a list of {@link Request}
+   * objects, with each {@link Request} containing its associated item IDs and item quantities.
+   *
+   * @param queryResult a list of maps, where each map represents a row in the query result.
+   * @return a list of {@link Request} objects, each representing a unique request with associated
+   *          item IDs and item quantities.
+   */
   public static List<Request> resultToRequests(List<Map<String, Object>> queryResult) {
     List<Request> requests = new ArrayList<>();
     Map<String, List<String>> requestsItemIds = new HashMap<>();
@@ -48,12 +66,28 @@ public class DatabaseService {
     return requests;
   }
 
+  /**
+   * Fetches a {@link Resource} object by its resource ID from the database.
+   *
+   * @param resourceId  the ID of the resource to fetch (String).
+   * @return a {@link Resource} object containing the resource details and a mapping of
+   *          associated item IDs to their corresponding {@link Item} objects.
+   */
   public Resource fetchResource(String resourceId) {
     String sql = "SELECT * FROM resource WHERE resourceId = ?";
     Map<String, Item> itemsMapping = resultToItems(jdbcTemplate.queryForList(sql, resourceId));
     return new Resource(itemsMapping, resourceId);
   }
 
+  /**
+   * Fetches a {@link Resource} object by its resource ID from the database,
+   * with a limit on the number of items retrieved.
+   *
+   * @param resourceId  the ID of the resource to fetch (String).
+   * @param limit the maximum number of items to retrieve for the resource (int).
+   * @return a {@link Resource} object containing the resource details and a mapping of
+   *          associated item IDs to their corresponding {@link Item} objects.
+   */
   public Resource fetchResource(String resourceId, int limit) {
     String sql = "SELECT * FROM resource WHERE resourceId = ? LIMIT ?";
     Map<String, Item> itemsMapping =
@@ -61,6 +95,14 @@ public class DatabaseService {
     return new Resource(itemsMapping, resourceId);
   }
 
+  /**
+   * Fetches a specific {@link Item} associated with a given resource ID from the database.
+   *
+   * @param resourceId  the ID of the resource to fetch (String).
+   * @param itemId  the ID of the item to fetch (String).
+   * @return a {@link Resource} object containing the requested {@link Item} mapped by its ID, and
+   *          associated with the specified `resourceId`.
+   */
   public Resource fetchItem(String resourceId, String itemId) {
     String sql = "SELECT * FROM resource WHERE resourceId = ? AND itemId = ?";
     Map<String, Item> itemsMapping =
@@ -68,27 +110,68 @@ public class DatabaseService {
     return new Resource(itemsMapping, resourceId);
   }
 
+  /**
+   * Fetches a list of {@link Request} objects associated with a given resource ID from the
+   * database.
+   *
+   * @param resourceId  the ID of the resource to fetch (String).
+   * @return a list of {@link Request} objects representing all requests associated with the
+   *         specified `resourceId`. If no requests are found, an empty list is returned.
+   */
   public List<Request> fetchRequestsByResource(String resourceId) {
     String sql = "SELECT * FROM request WHERE resourceId = ?";
     return resultToRequests(jdbcTemplate.queryForList(sql, resourceId));
   }
 
+  /**
+   * Fetches a list of {@link Request} objects associated with a given resource ID from the
+   * database.
+   *
+   * @param resourceId  the ID of the resource to fetch (String).
+   * @param limit the maximum number of items to retrieve for the resource (int).
+   * @return a list of {@link Request} objects representing all requests associated with the
+   *         specified `resourceId`. If no requests are found, an empty list is returned.
+   */
   public List<Request> fetchRequestsByResource(String resourceId, int limit) {
     String sql = "SELECT * FROM request WHERE resourceId = ? LIMIT ?";
     return resultToRequests(jdbcTemplate.queryForList(sql, resourceId, limit));
   }
 
+  /**
+   * Fetches a list of {@link Request} objects associated with a given resource ID from the
+   * database.
+   *
+   * @param resourceId  the ID of the resource to fetch (String).
+   * @param requestId the ID of the request to fetch (String).
+   * @return a list of {@link Request} objects representing all requests associated with the
+   *          specified `resourceId` and 'requestId'. If no requests are found, an
+   *          empty list is returned.
+   */
   public List<Request> fetchRequest(String resourceId, String requestId) {
     String sql = "SELECT * FROM request WHERE resourceId = ? AND requestId = ?";
     return resultToRequests(jdbcTemplate.queryForList(sql, resourceId, requestId));
   }
 
+  /**
+   * Adds a new {@link Item} to the resource table in the database.
+   *
+   * @param item the {@link Item} object containing the details of the item to be added.
+   * @param resourceId the ID of the resource with which the item is associated (String).
+   *                   This is used to link the item to the appropriate resource in the database.
+   */
   public void addItem(Item item, String resourceId) {
     String sql = "INSERT INTO resource\n" + "VALUES (?, ?, ?, ?, ?, ?, ?)";
     jdbcTemplate.update(sql, item.getItemId(), item.getItemType(), item.getQuantity(),
         item.getExpirationDate(), item.getStatus(), item.getDonorId(), resourceId);
   }
 
+  /**
+   * Adds a {@link Request} to the database, associating it with a specific resource ID.
+   *
+   * @param request the {@link Request} object containing the details of the request to be added.
+   * @param resourceId the ID of the resource to which the request is associated (String).
+   *                   This links the request to the appropriate resource in the database.
+   */
   public void addRequest(Request request, String resourceId) {
     String sql = "INSERT INTO request\n" + "VALUES (?, ?, ?, ?, ?, ?, ?)";
     for (int i = 0; i < request.getItemIds().size(); i++) {
@@ -99,26 +182,67 @@ public class DatabaseService {
     }
   }
 
+  /**
+   * Updates the quantity of a specific item associated with a given resource ID in the database.
+   *
+   * @param resourceId the ID of the resource to which the item belongs (String). This identifies
+   *                   the resource in the database.
+   * @param itemId the ID of the item whose quantity is to be updated (String). This identifies
+   *               the specific item in the database.
+   * @param quantity the new quantity to set for the specified item (int).
+   */
   public void updateItemQuantity(String resourceId, String itemId, int quantity) {
     String sql = "UPDATE resource SET quantity = ? WHERE resourceId = ? AND itemId = ?";
     jdbcTemplate.update(sql, quantity, resourceId, itemId);
   }
 
+  /**
+   * Updates the status of a specific item associated with a given resource ID in the database.
+   *
+   * @param resourceId the ID of the resource to which the item belongs (String). This identifies
+   *                   the resource in the database.
+   * @param itemId the ID of the item whose status is to be updated (String). This identifies
+   *               the specific item in the database.
+   * @param status the new status to set for the specified item (String). This should represent
+   *               a valid status value.
+   */
   public void updateItemStatus(String resourceId, String itemId, String status) {
     String sql = "UPDATE resource SET status = ? WHERE resourceId = ? AND itemId = ?";
     jdbcTemplate.update(sql, status, resourceId, itemId);
   }
 
+  /**
+   * Updates the status of a specific request associated with a given resource ID in the database.
+   *
+   * @param resourceId the ID of the resource to which the request belongs (String). This identifies
+   *                   the resource in the database.
+   * @param requestId the ID of the request whose status is to be updated (String). This identifies
+   *                  the specific request in the database.
+   * @param status the new status to set for the specified request (String). This should represent
+   *               a valid status value.
+   */
   public void updateRequestStatus(String resourceId, String requestId, String status) {
     String sql = "UPDATE request SET status = ? WHERE resourceId = ? AND requestId = ?";
     jdbcTemplate.update(sql, status, resourceId, requestId);
   }
 
+  /**
+   * Deletes all requests associated with a specific resource ID from the database.
+   *
+   * @param resourceId the ID of the resource whose associated requests are to be deleted (String).
+   *                   This identifies the resource in the database.
+   */
   public void delRequestsByResourceId(String resourceId) {
     String sql = "DELETE FROM request WHERE resourceId = ?";
     jdbcTemplate.update(sql, resourceId);
   }
 
+  /**
+   * Deletes a specific resource from the database.
+   *
+   * @param resourceId the ID of the resource to be deleted (String). This identifies the resource
+   *                   in the database.
+   */
   public void delResource(String resourceId) {
     String sql = "DELETE FROM resource WHERE resourceId = ?";
     jdbcTemplate.update(sql, resourceId);

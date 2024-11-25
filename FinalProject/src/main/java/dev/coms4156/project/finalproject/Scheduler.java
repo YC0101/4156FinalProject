@@ -151,7 +151,7 @@ public class Scheduler {
 
   /**
    * Returns whether the other object is equal to this one (deep comparison).
-   * 
+   *
    * @return The other object.
    */
   @Override

@@ -73,7 +73,8 @@ public class RouteController {
         message.put("message", "Invalid Input Item");
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
       } else {
-        database.addItem(newItem, resourceId.toUpperCase(Locale.ENGLISH));
+        database.addItem(newItem,
+            resourceId.toUpperCase(Locale.ENGLISH));
         return new ResponseEntity<>(newItem, HttpStatus.OK);
       }
     } catch (Exception e) {
@@ -109,7 +110,7 @@ public class RouteController {
       Request newRequest =
           new Request(requestId, itemIds, itemQuantities, status, priorityLevel, requesterInfo);
 
-      if(!newRequest.validateAttributes()) {
+      if (!newRequest.validateAttributes()) {
         Map<String, Object> message = new HashMap<>();
         message.put("message", "Invalid Input Request");
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);

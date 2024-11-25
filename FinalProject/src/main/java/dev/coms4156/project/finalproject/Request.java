@@ -55,7 +55,8 @@ public class Request implements Serializable {
       }
     }
     return ("Low".equals(priorityLevel) || "Medium".equals(priorityLevel)
-            || "High".equals(priorityLevel)) && ("Dispatched".equals(status) || "Pending".equals(status));
+            || "High".equals(priorityLevel)) && ("Dispatched".equals(status)
+            || "Pending".equals(status));
   }
 
   /**
@@ -144,8 +145,8 @@ public class Request implements Serializable {
 
   /**
    * Returns whether the other object is equal to this one (deep comparison).
-   * 
-   * @return The other object.
+   *
+   * @return whether the other object is equal to this one.
    */
   @Override
   public boolean equals(Object o) {

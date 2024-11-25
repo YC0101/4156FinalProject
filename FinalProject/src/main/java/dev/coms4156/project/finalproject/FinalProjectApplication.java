@@ -1,5 +1,6 @@
 package dev.coms4156.project.finalproject;
 
+import jakarta.annotation.PreDestroy;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import jakarta.annotation.PreDestroy;
+
 
 /**
  * The main class to start the Spring Boot application for the FinalProject.
@@ -39,7 +40,7 @@ public class FinalProjectApplication implements CommandLineRunner {
   public void run(String[] args) {
     for (String arg : args) {
       if ("Factory Reset".equals(arg)) {
-        try(Scanner scanner = new Scanner(System.in)) {
+        try (Scanner scanner = new Scanner(System.in)) {
           System.out.print("Are you sure you want to restore to factory settings? (Y/N): ");
           while (true) {
             String input = scanner.nextLine().trim().toUpperCase(Locale.ENGLISH);
@@ -125,7 +126,6 @@ public class FinalProjectApplication implements CommandLineRunner {
     for (Map.Entry<String, Item> entry : items.entrySet()) {
       database.addItem(entry.getValue(), defaultResourceId);
     }
-    Resource resource = new Resource(items, defaultResourceId);
 
     Request[] requestArray = new Request[5];
     requestArray[0] = new Request("REQ1", Arrays.asList(foodItemArray[0].getItemId()),
@@ -144,6 +144,7 @@ public class FinalProjectApplication implements CommandLineRunner {
       database.addRequest(request, defaultResourceId);
     }
     List<Request> requests = new ArrayList<>(Arrays.asList(requestArray));
+    Resource resource = new Resource(items, defaultResourceId);
     return Pair.of(requests, resource);
   }
 
