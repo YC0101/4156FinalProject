@@ -120,6 +120,7 @@ Welcome to test and try the functionalities! If you want to explore steps to dep
 
 - `requestId` (String): Unique identifier for the request (e.g., "req123").
 - `itemIds` (List<String>): List of IDs for the items being requested.
+- `itemQuantities` (List<Integer>): List of item quantities being requested.
 - `status` (String): The current status of the request (e.g., "requested", "fulfilled", "dispatched").
 - `priorityLevel` (String): The priority level of the request (e.g., "High", "Medium", "Low").
 - `requesterInfo` (String): Information about the person or entity who made the request (e.g., "NGO123", "Hospital001").
@@ -131,8 +132,9 @@ Welcome to test and try the functionalities! If you want to explore steps to dep
 - `getStatus()`: Returns the current status of the request.
 - `getPriorityLevel()`: Returns the priority level of the request.
 - `getRequesterInfo()`: Provides information about the requester.
-- `updateStatus(String newStatus)`: Updates the status of the request (e.g., from "requested" to "fulfilled").
-- `updatePriority(String newPriority)`: Adjusts the priority level of the request (e.g., from "Medium" to "High").
+- `validateAttributes()`: Ensures that the request has valid attributes, such as positive quantities and reasonable status.
+- `setStatus(String newStatus)`: Updates the status of the request (e.g., from "requested" to "fulfilled").
+- `setPriority(String newPriority)`: Adjusts the priority level of the request (e.g., from "Medium" to "High").
 
 **Scheduler Class**
 
@@ -143,11 +145,27 @@ Welcome to test and try the functionalities! If you want to explore steps to dep
 
 2. Methods:
 
-- `processRequests()`: Processes incoming requests by checking the availability of requested resources in the Resource repository. It prioritizes requests based on urgency and schedules dispatches.
+- `processRequests()`: Processes incoming requests by checking the availability of requested resources in the Resource repository. 
 - `checkResourceAvailability(Request request)`: Checks if the requested resource is available in the repository. If the resource is available, the request can proceed to scheduling.
 - `scheduleDispatch(Request request)`: Schedules the dispatch of available resources for a specific request. The method assigns volunteers or delivery agents to handle the dispatch logistics.
 
-**Controller (API)**
+**DatabaseService Class**
+
+1. Methods:
+
++ `fetchResource(String resourceId, int limit)`: Fetches a Resource object by its resource ID from the database, with a limit on the number of items retrieved.
++ `fetchItem(String resourceId, String itemId)`: Fetches a specific Item associated with a given resource ID from the database.
++ `fetchRequestsByResource(String resourceId, int limit)`: Fetches a list of Request objects associated with a given resource ID from the database, with a limit on the number of requests retrieved.
++ `fetchRequest(String resourceId, String requestId)`: Fetches a Request object associated with a given resource ID from the database.
++ `addItem(Item item, String resourceId)`: Adds a Item to the resource table in the database.
++ `addRequest(Request request, String resourceId)`: Adds a Request to the database, associating it with a specific resource ID.
++ `updateItemQuantity(String resourceId, String itemId, int quantity)`: Updates the quantity of a specific item associated with a given resource ID in the database.
++ `updateItemStatus(String resourceId, String itemId, String status)`: Updates the status of a specific item associated with a given resource ID in the database.
++ `updateRequestStatus(String resourceId, String requestId, String status)`: Updates the status of a specific request associated with a given resource ID in the database.
++ `delRequestsByResourceId(String resourceId)`: Deletes all requests associated with a specific resource ID from the database.
++ `delResource(String resourceId)`: Deletes a specific resource from the database.
+
+**RouteController (API)**
 
 1. Attributes: 
 
@@ -502,23 +520,33 @@ All team members contribute to updating the board regularly to reflect the curre
   ![Screenshots of API.](/screenshots/api5.png)
    ### retrieveItem
   ![Screenshots of API.](/screenshots/api6.png)
-   ### retrieveAvailableItems
-  ![Screenshots of API.](/screenshots/api7.png)
-   ### retrieveDispatchedItems
-  ![Screenshots of API.](/screenshots/api8.png)
    ### retrieveItemsByDonor
+  ![Screenshots of API.](/screenshots/api7.png)
+   ### retrieveAvailableItems
+  ![Screenshots of API.](/screenshots/api8.png)
+   ### retrieveDispatchedItems
   ![Screenshots of API.](/screenshots/api9.png)
 
+### retrieveRequestsByResource
+
+  ![Screenshots of API.](/screenshots/api10.png)
+
+### retrieveRequest
+
+  ![Screenshots of API.](/screenshots/api11.png)
+
 ## API GCP Test Links:
-    Default/Home: https://ase-team.ue.r.appspot.com/
-    createDonation: https://ase-team.ue.r.appspot.com/createDonation?resourceId=R_COLUMBIA&itemType=Food&quantity=3&expirationDate=2025-03-11&donorId=Robert
-    createRequest: https://ase-team.ue.r.appspot.com/createRequest?requestId=testRequest&itemIds=fake&status=Pending&priorityLevel=High&requesterInfo=John Doe
-    processRequest: https://ase-team.ue.r.appspot.com/processRequests?resourceId=R_COLUMBIA
-    retrieveResource: https://ase-team.ue.r.appspot.com/retrieveResource?resourceId=R_COLUMBIA
-    retrieveItem: https://ase-team.ue.r.appspot.com/retrieveItem?resourceId=R_COLUMBIA&itemId=90bebb7d-d1a1-4a7c-898b-9cac2530fb6b
-    retrieveAvailableItems: https://ase-team.ue.r.appspot.com/retrieveAvailableItems?resourceId=R_COLUMBIA 
-    retrieveDispatchedItems: https://ase-team.ue.r.appspot.com/retrieveDispatchedItems?resourceId=R_COLUMBIA 
-    retrieveItemsByDonor: https://ase-team.ue.r.appspot.com/retrieveItemsByDonor?resourceId=R_COLUMBIA&donorId=Robert 
+    Default/Home: https://ase-service.de.r.appspot.com/home
+    createDonation: https://ase-service.de.r.appspot.com/createDonation?resourceId=R_TEST&itemType=Food&quantity=8&expirationDate=2024-12-01&donorId=Cici
+    createRequest: https://ase-service.de.r.appspot.com/createRequest?requestId=testRequest1&itemIds=e7a3dd6f-ccf4-4e2f-a632-e3085466b7fa, c7427326-7c87-4d84-9d45-3c3b8d4d420b&itemQuantities=3, 5&status=Pending&priorityLevel=High&requesterInfo=John&resourceId=R_TEST
+    processRequest: https://ase-service.de.r.appspot.com/processRequests?resourceId=R_TEST
+    retrieveResource: https://ase-service.de.r.appspot.com/retrieveResource?resourceId=R_TEST
+    retrieveItem: https://ase-service.de.r.appspot.com/retrieveItem?resourceId=R_TEST&itemId=c7427326-7c87-4d84-9d45-3c3b8d4d420b
+    retrieveAvailableItems: https://ase-service.de.r.appspot.com/retrieveAvailableItems?resourceId=R_TEST
+    retrieveDispatchedItems: https://ase-service.de.r.appspot.com/retrieveDispatchedItems?resourceId=R_TEST
+    retrieveItemsByDonor: https://ase-service.de.r.appspot.com/retrieveItemsByDonor?resourceId=R_TEST&donorId=Cici
+    retrieveRequestsByResource: https://ase-service.de.r.appspot.com/retrieveRequestsByResource?resourceId=R_TEST
+    retrieveRequest: https://ase-service.de.r.appspot.com/retrieveRequest?resourceId=R_TEST&requestId=testRequest1
 
 ## Steps to deploy to GCP
 This project can be deployed on Google Cloud Platform (GCP). Follow the steps below to deploy it on GCP.
