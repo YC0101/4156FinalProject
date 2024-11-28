@@ -18,12 +18,12 @@ public class DatabaseService {
   private JdbcTemplate jdbcTemplate;
 
   /**
-   * Converts a query result into a mapping of item IDs to {@link Item} objects.
+   * Converts a SQL query result of items into a mapping of item IDs to {@link Item} objects.
    *
    * @param queryResult   a list of maps, where each map represents a row in the query result.
    * @return    a map where the keys are item IDs (Strings) and the values are {@link Item} objects.
    */
-  public static Map<String, Item> resultToItems(List<Map<String, Object>> queryResult) {
+  private static Map<String, Item> resultToItems(List<Map<String, Object>> queryResult) {
     Map<String, Item> itemsMapping = new HashMap<>();
     for (Map<String, Object> row : queryResult) {
       Item item = new Item((String) row.get("itemType"), (int) row.get("quantity"),
@@ -36,15 +36,13 @@ public class DatabaseService {
   }
 
   /**
-   * This method processes a list of database query results, where each result is represented
-   * as a map of column names to their respective values. It creates a list of {@link Request}
-   * objects, with each {@link Request} containing its associated item IDs and item quantities.
+   * Converts a SQL query result of requests into a list of {@link Request} objects,
+   * , with each {@link Request} containing its associated item IDs and item quantities.
    *
    * @param queryResult a list of maps, where each map represents a row in the query result.
    * @return a list of {@link Request} objects, each representing a unique request with associated
-   *          item IDs and item quantities.
    */
-  public static List<Request> resultToRequests(List<Map<String, Object>> queryResult) {
+  private static List<Request> resultToRequests(List<Map<String, Object>> queryResult) {
     List<Request> requests = new ArrayList<>();
     Map<String, List<String>> requestsItemIds = new HashMap<>();
     Map<String, List<Integer>> requestsItemQuantities = new HashMap<>();
@@ -125,7 +123,7 @@ public class DatabaseService {
 
   /**
    * Fetches a list of {@link Request} objects associated with a given resource ID from the
-   * database.
+   * database, with a limit on the number of requests retrieved.
    *
    * @param resourceId  the ID of the resource to fetch (String).
    * @param limit the maximum number of items to retrieve for the resource (int).
@@ -138,8 +136,7 @@ public class DatabaseService {
   }
 
   /**
-   * Fetches a list of {@link Request} objects associated with a given resource ID from the
-   * database.
+   * Fetches a {@link Request} object associated with a given resource ID from the database.
    *
    * @param resourceId  the ID of the resource to fetch (String).
    * @param requestId the ID of the request to fetch (String).
