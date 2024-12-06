@@ -3,13 +3,14 @@
 This is the Github repository for the service portion of the Team Project associated with COMS 4156 Advanced Software Engineering.
 Our group, ctrlZHeroes, contains members: Yanxi Chen, Qirui Ruan, Xinchen Zhang, Songwen Zhao, Charlie Shen.
 
-## Viewing original assignment repo 
+## Viewing the Client App Repository
 
 Please use the following link to view the repository relevant to the app: https://github.com/griffinnewbold/COMS-4156-App
 
 ## Service Overview
 
 Our Service, Resource Management System (RMS), is designed to streamline the process of donating, requesting, and dispatching essential resources such as food, medical supplies, clothing, and other vital goods. The **RMS** provides a series of functions aimed at efficient resource management. Key functionalities include:
+
 - **Donation Management**: Enabling donors to contribute resources, defining types, quantities, and expiration dates.
 - **Request Handling**: Allowing users to request resources based on need, specify priorities, and update statuses.
 - **Resource Dispatching**: Scheduling and fulfilling requests by matching available resources to meet demands.
@@ -29,7 +30,7 @@ To guide users effectively, here is a bookmark-based outline for easy navigation
 5. [Testing the Service](#tests)
 6. [API Local Test Screenshots](#api-local-test-screenshots)
 7. [API GCP Test Links](#api-gcp-test-links)
-7. [Project Management and Contributions](#project-management-and-contributions)
+8. [Project Management and Contributions](#project-management-and-contributions)
 
 These bookmarks provide direct links to each major section, allowing quick access to detailed instructions, endpoint definitions, testing information, and team contributions.  
 
@@ -251,7 +252,7 @@ Any malformed requests, such as incorrect parameter types, missing required para
 - **Expected Input Parameters:**
   - `resourceId` (String): The unique ID of the resource the item will be added to.
   - `itemType` (String): The type of the item the donor wants to donate.
-  - `quantity` (int): The number of items being donated.
+  - `quantity` (int): The number of items being donated
   - `expirationDate` (LocalDate): The expiration date of the donated item.
   - `donorId` (String): The ID of the donor who provided the item.
 
@@ -277,7 +278,7 @@ Any malformed requests, such as incorrect parameter types, missing required para
   - `itemIds` (List<String>): A list of item IDs being requested.
   - `itemQuantities` (List<Integer>): A list of quantities corresponding to each item being requested.
   - `status` (String): The current status of the request.
-  - `priorityLevel` (String): The priority level of the request.
+  - `priorityLevel` (String): The priority level of the request, accepted values are `High`, `Medium`, or `Low` (case-insensitive).
   - `requesterInfo` (String): Information about the requester.
   - `resourceId` (String): The unique ID of the resource the request is associated with.
 
@@ -487,12 +488,13 @@ We are using **GitHub Projects** for project management. All tasks, issues, and 
 You can view our **GitHub Projects** board [here](https://github.com/YC0101/4156FinalProject_ctrlZHeroes/projects/1).
 
 ### Task Breakdown:
+
   Details can be found in repo/Project
 
-- **Yanxi Chen**: Resource class implementation and testing.
+- **Yanxi Chen**: Resource class implementation, testing, database creation and initialization.
 - **Qirui Ruan**: Item class implementation and testing.
-- **Xinchen Zhang**: Scheduler class implementation, testing, and database creation.
-- **Songwen Zhao**: API development, database service, overall adjustments and tests.
+- **Xinchen Zhang**: Scheduler class implementation and testing.
+- **Songwen Zhao**: API implementation, database service connection, overall testing and adjustments.
 - **Charlie Shen**: Request class implementation and testing.
 
 The following tasks are tracked via the GitHub project board:
@@ -508,23 +510,41 @@ All team members contribute to updating the board regularly to reflect the curre
 ## API Local Test Screenshots:
 
    Below are each API local test in Postman:
+
    ### home
+
   ![Screenshots of API.](/screenshots/api1.png)
+
    ### createDonation
+
   ![Screenshots of API.](/screenshots/api2.png)
+
    ### createRequest
+
   ![Screenshots of API.](/screenshots/api3.png)
+
    ### processRequests
+
   ![Screenshots of API.](/screenshots/api4.png)
+
    ### retrieveResource
+
   ![Screenshots of API.](/screenshots/api5.png)
+
    ### retrieveItem
+
   ![Screenshots of API.](/screenshots/api6.png)
+
    ### retrieveItemsByDonor
+
   ![Screenshots of API.](/screenshots/api7.png)
+
    ### retrieveAvailableItems
+
   ![Screenshots of API.](/screenshots/api8.png)
+
    ### retrieveDispatchedItems
+
   ![Screenshots of API.](/screenshots/api9.png)
 
 ### retrieveRequestsByResource
@@ -536,6 +556,7 @@ All team members contribute to updating the board regularly to reflect the curre
   ![Screenshots of API.](/screenshots/api11.png)
 
 ## API GCP Test Links:
+
     Default/Home: https://ase-service.de.r.appspot.com/home
     createDonation: https://ase-service.de.r.appspot.com/createDonation?resourceId=R_TEST&itemType=Food&quantity=8&expirationDate=2024-12-01&donorId=Cici
     createRequest: https://ase-service.de.r.appspot.com/createRequest?requestId=testRequest1&itemIds=e7a3dd6f-ccf4-4e2f-a632-e3085466b7fa, c7427326-7c87-4d84-9d45-3c3b8d4d420b&itemQuantities=3, 5&status=Pending&priorityLevel=High&requesterInfo=John&resourceId=R_TEST
@@ -549,9 +570,11 @@ All team members contribute to updating the board regularly to reflect the curre
     retrieveRequest: https://ase-service.de.r.appspot.com/retrieveRequest?resourceId=R_TEST&requestId=testRequest1
 
 ## Steps to deploy to GCP
+
 This project can be deployed on Google Cloud Platform (GCP). Follow the steps below to deploy it on GCP.
 
 You can deploy the application to GCP, open the application in your browser, and even test it on GCP.
+
    ```
    gcloud config set project YOUR_PROJECT_ID
 
@@ -561,7 +584,9 @@ You can deploy the application to GCP, open the application in your browser, and
    ```
 
 ### Testing on GCP
+
 You can test your deployed service using Postman. The base URL will be:
+
 ```
 https://YOUR_PROJECT_ID.ue.r.appspot.com/endpoint?arg=value%
 ```
