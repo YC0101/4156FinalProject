@@ -3,6 +3,7 @@ package dev.coms4156.project.finalproject;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -54,9 +55,10 @@ public class Request implements Serializable {
         return false;
       }
     }
-    return ("Low".equals(priorityLevel) || "Medium".equals(priorityLevel)
-            || "High".equals(priorityLevel)) && ("Dispatched".equals(status)
-            || "Pending".equals(status));
+    return ("LOW".equals(priorityLevel.toUpperCase(Locale.ENGLISH))
+        || "MEDIUM".equals(priorityLevel.toUpperCase(Locale.ENGLISH))
+        || "HIGH".equals(priorityLevel.toUpperCase(Locale.ENGLISH)))
+        && ("Dispatched".equals(status) || "Pending".equals(status));
   }
 
   /**
