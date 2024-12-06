@@ -5,7 +5,7 @@ Our group, ctrlZHeroes, contains members: Yanxi Chen, Qirui Ruan, Xinchen Zhang,
 
 ## Viewing the Client App Repository
 
-Please use the following link to view the repository relevant to the app: https://github.com/griffinnewbold/COMS-4156-App
+Please use the following link to view the repository relevant to the app: https://github.com/charlhhhh/4156FinalProject_ctrlZHeroes-app
 
 ## Service Overview
 
